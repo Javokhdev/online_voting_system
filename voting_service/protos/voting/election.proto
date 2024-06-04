@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "genproto/voting";
+
+package voting;
+
+service ElectionService{
+    rpc Create(CreateElectionReq) returns(Void);
+    rpc GetById(ById) returns(GetElectionRes);
+    rpc GetAll(Filter) returns(GetAllElectionRes);
+    rpc Update(GetElectionRes) returns(Void);
+    rpc Delete(ById) returns(Void);
+}
+
+message CreateElectionReq{
+    string name = 1;
+    string date = 2;
+}
+
+message GetElectionRes{
+    string id = 1;
+    string name = 2;
+    string date = 3;
+}
+
+message GetAllElectionRes{
+    repeated GetElectionRes Elections = 1;
+}
+
+message Filter{
+    int32 Limit = 1;
+    int32 Offset = 2;
+}
+
+message ById{
+    string id = 1;
+}
+
+message Void{}
