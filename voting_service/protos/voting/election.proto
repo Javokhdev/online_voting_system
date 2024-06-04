@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-option go_package = "genproto/voting";
+option go_package = "genproto/voting/";
 
 package voting;
 
 service ElectionService{
-    rpc Create(CreateElectionReq) returns(Void);
-    rpc GetById(ById) returns(GetElectionRes);
-    rpc GetAll(Filter) returns(GetAllElectionRes);
-    rpc Update(GetElectionRes) returns(Void);
-    rpc Delete(ById) returns(Void);
+    rpc Create(CreateElectionReq) returns(Void){}
+    rpc GetById(ById) returns(GetElectionRes){}
+    rpc GetAll(Filter) returns(GetAllElectionRes){}
+    rpc Update(GetElectionRes) returns(Void){}
+    rpc Delete(ById) returns(Void){}
 }
 
 message CreateElectionReq{

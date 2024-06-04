@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = "genproto/public/";
+
+package public;
+
+import "voting/election.proto";
+
+service PublicService{
+    rpc Create(CreatePublicReq) returns(Void){}
+    rpc GetById(ById) returns(GetPublicRes){}
+    rpc GetAll(Filter) returns(GetAllPublicRes){}
+    rpc Update(GetPublicRes) returns(Void){}
+    rpc Delete(ById) returns(Void){}
+}
+
+message CreatePublicReq{
+    string first_name = 1;
+    string last_name = 2;
+    string birthday = 3;
+    string gender = 4;
+    string nation = 5;
+    string party_id = 6;
+}
+
+message GetPublicRes{
+    string first_name = 1;
+    string last_name = 2;
+    string birthday = 3;
+    string gender = 4;
+    string nation = 5;
+    string party_id = 6;
+}
+
+message GetAllPublicRes{
+    repeated GetPublicRes Parties = 1;
+}
