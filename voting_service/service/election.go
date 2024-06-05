@@ -1,25 +1,26 @@
 package service
 
 import (
-	elec "voting_service/genproto/election"
-	st "voting_service/storage/postgresql"
+	"context"
 	"log/slog"
+	v "voting_service/genproto/voting"
+	st "voting_service/storage/postgresql"
 )
 
 type ElectionService struct {
-	storage *st.ElectionStorage
-	elec.UnimplementedElectionServiceServer
+	storage st.Storage
+	v.UnimplementedElectionServiceServer
 }
 
-func NewElectionService(storage *st.ElectionStorage) *ElectionService {
+func NewElectionService(storage *st.Storage) *ElectionService {
 	return &ElectionService{
-		storage: storage,
+		storage: *storage,
 	}
 }
 
-func (s *ElectionService) CreateElection(election *elec.CreateElectionReq) (*elec.Void, error) {
-	slog.Info("CreateElection Service called", "election", election)
-	err := s.storage.CreateElection(election)
+func (s *ElectionService) CreateElection(ctx context.Context, election *v.CreateElectionReq) (*v.Void, error) {
+	slog.Info("CreateElection Service called", "election", election.GetName())
+	_, err := s.storage.ElectionS.CreateElection(election)
 	if err != nil {
 		return nil, err
 	}
@@ -27,31 +28,39 @@ func (s *ElectionService) CreateElection(election *elec.CreateElectionReq) (*ele
 	return nil, nil
 }
 
-func (s *ElectionService) GetElectionById(id string) (*elec.GetElectionRes, error) {
-	slog.Info("GetElectionById Service called", "election_id", id)
-	return s.storage.GetElectionById(id)
+func (s *ElectionService) GetElectionById(ctx context.Context, id *v.ById) (*v.GetElectionRes, error) {
+	slog.Info("GetElectionById Service called", "election_id", id.GetId())
+	election, err := s.storage.ElectionS.GetElectionById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return election, nil
 }
 
-func (s *ElectionService) GetAllElections() (*elec.GetAllElectionRes, error) {
+func (s *ElectionService) GetAllElections(ctx context.Context, flt *v.Filter) (*v.GetAllElectionRes, error) {
 	slog.Info("GetAllElections Service called")
-	return []s.storage.GetAllElections()
-}
 
-func (s *ElectionService) UpdateElection(election *elec.GetElectionRes) (*elec.Void, error) {
-	slog.Info("UpdateElection Service called", "election", election)
-	err := s.storage.UpdateElection(election)
-	if err != nil {
+	res, err := s.storage.ElectionS.GetAllElections(flt)
+
+	if err != nil{
 		return nil, err
 	}
-	return nil, nil
+
+	return res, nil
 }
 
-func (s *ElectionService) DeleteElection(id string) (*elec.Void, error) {
+func (s *ElectionService) UpdateElection(ctx context.Context,election *v.GetElectionRes) (*v.Void, error) {
+	slog.Info("UpdateElection Service called", "election", election.GetId())
+	_, err := s.storage.ElectionS.UpdateElection(election)
+
+	return nil, err
+}
+
+func (s *ElectionService) DeleteElection(ctx context.Context, id *v.ById) (*v.Void, error) {
 	slog.Info("DeleteElection Service called", "election_id", id)
-	err := s.storage.DeleteElection(id)
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
-}
+	_, err := s.storage.ElectionS.DeleteElection(id)
 
+	return nil, err
+}

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "genproto/election/";
+option go_package = "genproto/voting/";
 
-package election;
+package voting;
 
 service ElectionService{
     rpc Create(CreateElectionReq) returns(Void){}
@@ -28,8 +28,8 @@ message GetAllElectionRes{
 }
 
 message Filter{
-    string name = 1;
-    string date = 2;
+    int32 limit = 1;
+    int32 offset = 2;
 }
 
 message ById{

@@ -1,14 +1,15 @@
 syntax = "proto3";
 
-option go_package = "genproto/party/";
+option go_package = "genproto/public/";
 
-package party;
+package public;
 
+import "public.proto";
 
 service PartyService{
     rpc Create(CreatePartyReq) returns(Void){}
     rpc GetById(ById) returns(GetPartyRes){}
-    rpc GetAll(Filter) returns(GetAllPartyRes){}
+    rpc GetAll(FilterParty) returns(GetAllPartyRes){}
     rpc Update(GetPartyRes) returns(Void){}
     rpc Delete(ById) returns(Void){}
 }
@@ -28,16 +29,10 @@ message GetPartyRes{
     string description = 5;
 }
 
-message Filter{
-    string name = 1;
-    string opened_date = 2;
+message FilterParty{
+    int32 limit = 1;
+    int32 offset = 2;
 } 
-
-message ById{
-    string id = 1;
-}
-
-message Void{}
 
 message GetAllPartyRes{
     repeated GetPartyRes Parties = 1;

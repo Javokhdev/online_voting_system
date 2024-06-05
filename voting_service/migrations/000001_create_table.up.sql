@@ -1,41 +1,41 @@
-CREATE TABLE IF NOT EXISTS election(
+CREATE TABLE IF NOT EXISTS elections(
     id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT NOW(),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at BIGINT DEFAULT 0
-)
+);
 
-CREATE TABLE IF NOT EXISTS candidate(
+CREATE TABLE IF NOT EXISTS candidates(
     id UUID PRIMARY KEY,
-    election_id UUID NOT NULL,
-    public_id UUID REFERENCES public(id),
-    party_id UUID REFERENCES party(id),
+    election_id UUID REFERENCES elections(id),
+    public_id UUID NOT NULL,
+    party_id UUID NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at BIGINT DEFAULT 0
-)
+);
 
-ALTER TABLE candidate
-ADD CONSTRAINT unique_election_public UNIQUE (election_id, public_id); 
+ALTER TABLE candidates
+ADD CONSTRAINT candidate_unique_election_public UNIQUE (election_id, public_id); 
 
-CREATE TABLE IF NOT EXISTS public_vote(
+CREATE TABLE IF NOT EXISTS public_votes(
     id UUID PRIMARY KEY,
-    election_id UUID REFERENCES election(id),
-    public_id UUID REFERENCES public(id),
+    election_id UUID REFERENCES elections(id),
+    public_id UUID NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at BIGINT DEFAULT 0
-)
+);
 
-ALTER TABLE public_vote
-ADD CONSTRAINT unique_election_public UNIQUE (election_id, public_id);
+ALTER TABLE public_votes
+ADD CONSTRAINT public_votes_unique_election_public UNIQUE (election_id, public_id);
 
 CREATE TABLE IF NOT EXISTS votes(
     id UUID PRIMARY KEY,
-    candidate UUID REFERENCES candidate(id),
+    candidate UUID REFERENCES candidates(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at BIGINT DEFAULT 0
-)
+);

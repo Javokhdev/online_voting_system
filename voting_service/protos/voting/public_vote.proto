@@ -4,6 +4,9 @@ option go_package = "genproto/voting/";
 
 package voting;
 
+import "election.proto";
+
+
 service PublicVoteService{
     rpc Create(CreatePublicVoteReq) returns(Void){}
     rpc CreateVotes(CreateVoteReq) returns(Void){}
@@ -43,14 +46,3 @@ message GetAllPublicVoteRes{
 message GetAllVotesRes{
     repeated GetVotesRes Votes = 1;
 }
-
-message Filter{
-    string election_id = 1;
-    string candidate_id = 2;
-}
-
-message ById{
-    string id = 1;
-}
-
-message Void{}

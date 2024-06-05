@@ -1,4 +1,4 @@
-package storage
+package postgresql
 
 import (
 	"database/sql"
@@ -8,6 +8,14 @@ import (
 
 	_ "github.com/lib/pq"
 )
+
+type Storage struct{
+	Db *sql.DB
+	ElectionS *ElectionStorage
+	CandidateS *CandidateStorage
+	PublicVoteS *PublicVoteStorage
+	VotesS *VoteStorage
+}
 
 func ConnectDB(config config.Config) (*sql.DB, error) {
 	connStr := fmt.Sprintf("host=%s user=%s dbname=%s password=%s port=%d sslmode=disable",

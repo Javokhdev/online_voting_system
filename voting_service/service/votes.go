@@ -1,55 +1,64 @@
 package service
 
 import (
-	vote "voting_service/genproto/voting"
-	st "voting_service/storage/postgresql"
+	"context"
 	"log/slog"
+	v "voting_service/genproto/voting"
+	st "voting_service/storage/postgresql"
 )
 
 type VoteService struct {
-	storage *st.VoteStorage
-	vote.UnimplementedPublicVoteServiceServer
+	storage st.Storage
+	v.UnimplementedPublicVoteServiceServer
 }
 
-func NewVoteService(storage *st.VoteStorage) *VoteService {
+func NewVoteService(storage *st.Storage) *VoteService {
 	return &VoteService{
-		storage: storage,
+		storage: *storage,
 	}
 }
 
-func (s *VoteService) CreateVote(Vote *vote.CreateVoteReq) (*vote.Void, error) {
-	slog.Info("CreateVote Service called", "_vote", Vote)
-	err := s.storage.CreateVote(Vote)
+func (s *VoteService) CreateVote(ctx context.Context, Vote *v.CreateVoteReq) (*v.Void, error) {
+	slog.Info("CreateVote Service called", "_vote", Vote.GetCandidateId())
+	err := s.storage.VotesS.CreateVote(Vote)
+
+	return nil, err
+}
+
+func (s *VoteService) GetVoteById(ctx context.Context, id *v.ById) (*v.GetVotesRes, error) {
+	slog.Info("GetVoteById Service called", "vote_id", id.GetId())
+	
+	res, err := s.storage.VotesS.GetVoteById(id)
+
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+
+	return res, nil
 }
 
-func (s *VoteService) GetVoteById(id string) (*vote.GetVoteRes, error) {
-	slog.Info("GetVoteById Service called", "vote_id", id)
-	return s.storage.GetVoteById(id)
-}
-
-func (s *VoteService) GetAllVotes() (*vote.GetAllVoteRes, error) {
+func (s *VoteService) GetAllVotes(ctx context.Context, flt *v.Filter) (*v.GetAllVotesRes, error) {
 	slog.Info("GetAllVotes Service called")
-	return s.storage.GetAllVotes()
-}
+	
+	res, err := s.storage.VotesS.GetAllVotes(flt)
 
-func (s *VoteService) UpdateVote(Vote *vote.GetVoteRes) (*vote.Void, error) {
-	slog.Info("UpdateVote Service called", "vote", Vote)
-	err := s.storage.UpdateVote(Vote)
-	if err != nil {
+	if err != nil{
 		return nil, err
 	}
-	return nil, nil
+
+	return res, nil
 }
 
-func (s *VoteService) DeleteVote(id string) (*vote.Void, error) {
-	slog.Info("DeleteVote Service called", "vote_id", id)
-	err := s.storage.DeleteVote(id)
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
+func (s *VoteService) UpdateVote(ctx context.Context, Vote *v.GetVotesRes) (*v.Void, error) {
+	slog.Info("UpdateVote Service called", "vote", Vote.GetId())
+	_, err := s.storage.VotesS.UpdateVote(Vote)
+
+	return nil, err
+}
+
+func (s *VoteService) DeleteVote(ctx context.Context, id *v.ById) (*v.Void, error) {
+	slog.Info("DeleteVote Service called", "vote_id", id.GetId())
+	_, err := s.storage.VotesS.DeleteVote(id)
+
+	return nil, err
 }

@@ -1,8 +1,10 @@
 syntax = "proto3";
 
-option go_package = "genproto/candidate/";
+option go_package = "genproto/voting/";
 
-package candidate;
+package voting;
+
+import "election.proto";
 
 service CandidateService{
     rpc Create(CreateCandidateReq) returns(Void){}
@@ -29,9 +31,3 @@ message GetCandidateRes{
 message GetAllCandidateRes{
     repeated GetCandidateRes Candidates = 1;
 }
-
-message ById{
-    string id = 1;
-}
-
-message Void{}
