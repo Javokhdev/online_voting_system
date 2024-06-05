@@ -13,7 +13,6 @@ type Storage struct {
 	ElectionS   *ElectionStorage
 	CandidateS  *CandidateStorage
 	PublicVoteS *PublicVoteStorage
-	VotesS      *VoteStorage
 }
 
 func NewPostgresStorage(config config.Config) (*Storage, error) {
@@ -32,13 +31,11 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 	er := NewElectionStorage(db)
 	cr := NewCandidateStorage(db)
 	pr := NewPublicVoteStorage(db)
-	vr := NewVoteStorage(db)
 
 	return &Storage{
 		Db:          db,
 		ElectionS:   er,
 		CandidateS:  cr,
 		PublicVoteS: pr,
-		VotesS:      vr,
 	}, nil
 }

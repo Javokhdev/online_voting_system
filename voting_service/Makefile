@@ -4,7 +4,7 @@ proto-gen:
 	./scripts/gen-proto.sh ${CURRENT_DIR}
 
 exp:
-	export DBURL='postgres://postgres:root@localhost:5432/voting?sslmode=disable'
+	export DBURL='postgres://postgres:1111@localhost:5432/voting?sslmode=disable'
 
 mig-up:
 	migrate -path migrations -database 'postgres://postgres:1111@localhost:5432/voting?sslmode=disable' -verbose up
@@ -20,4 +20,4 @@ mig-insert:
 	migrate create -ext sql -dir migrations -seq insert_table
 
 swag-init:
-	swag init -g api/api.go -o api/docs
+	swag init -g api/api.go docs/docs

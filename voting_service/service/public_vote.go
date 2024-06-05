@@ -18,17 +18,17 @@ func NewPublicVoteService(storage *st.Storage) *PublicVoteService {
 	}
 }
 
-func (s *PublicVoteService) CreatePublicVote(ctx context.Context, publicVote *v.CreatePublicVoteReq) (*v.Void, error) {
+func (s *PublicVoteService) Create(ctx context.Context, publicVote *v.CreatePublicVoteReq) (*v.Void, error) {
 	slog.Info("CreatePublicVote Service called", "public_vote", publicVote.GetElectionId())
-	_, err := s.storage.PublicVoteS.CreatePublicVote(publicVote)
+	_, err := s.storage.PublicVoteS.Create(publicVote)
 
 	return nil, err
 }
 
-func (s *PublicVoteService) GetPublicVoteById(ctx context.Context, id *v.ById) (*v.GetPublicVoteRes, error) {
+func (s *PublicVoteService) GetById(ctx context.Context, id *v.ById) (*v.GetPublicVoteRes, error) {
 	slog.Info("GetPublicVoteById Service called", "public_vote_id", id.GetId())
 	
-	res, err := s.storage.PublicVoteS.GetPublicVoteById(id)
+	res, err := s.storage.PublicVoteS.GetById(id)
 
 	if err != nil {
 		return nil, err
@@ -37,10 +37,10 @@ func (s *PublicVoteService) GetPublicVoteById(ctx context.Context, id *v.ById) (
 	return res, nil
 }
 
-func (s *PublicVoteService) GetAllPublicVotes(ctx context.Context, flt *v.Filter) (*v.GetAllPublicVoteRes, error) {
+func (s *PublicVoteService) GetAll(ctx context.Context, flt *v.Filter) (*v.GetAllPublicVoteRes, error) {
 	slog.Info("GetAllPublicVotes Service called")
 
-	res, err := s.storage.PublicVoteS.GetAllPublicVotes(flt)
+	res, err := s.storage.PublicVoteS.GetAll(flt)
 
 	if err != nil{
 		return nil, err
@@ -49,18 +49,42 @@ func (s *PublicVoteService) GetAllPublicVotes(ctx context.Context, flt *v.Filter
 	return res, nil
 }
 
-func (s *PublicVoteService) UpdatePublicVote(ctx context.Context, publicVote *v.GetPublicVoteRes) (*v.Void, error) {
+func (s *PublicVoteService) Update(ctx context.Context, publicVote *v.GetPublicVoteRes) (*v.Void, error) {
 	slog.Info("UpdatePublicVote Service called", "public_vote", publicVote.GetId())
 
-	_, err := s.storage.PublicVoteS.UpdatePublicVote(publicVote)
+	_, err := s.storage.PublicVoteS.Update(publicVote)
 
 	return nil, err
 }
 
-func (s *PublicVoteService) DeletePublicVote(ctx context.Context, id *v.ById) (*v.Void, error) {
+func (s *PublicVoteService) Delete(ctx context.Context, id *v.ById) (*v.Void, error) {
 	slog.Info("DeletePublicVote Service called", "public_vote_id", id.GetId())
 
-	_, err := s.storage.PublicVoteS.DeletePublicVote(id)
+	_, err := s.storage.PublicVoteS.Delete(id)
 
 	return nil, err
+}
+
+func (s *PublicVoteService) GetVote(ctx context.Context, vote *v.ById)(*v.GetVoteById, error){
+	slog.Info("Get Vote by candidate id", "vote byid",vote.GetId())
+
+	res, err := s.storage.PublicVoteS.GetVote(vote)
+
+	if err != nil{
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (s *PublicVoteService) GetVotes(ctx context.Context, flt *v.Filter)(*v.GetAllVotes, error){
+	slog.Info("Get all votes with count")
+
+	res, err := s.storage.PublicVoteS.GetVotes(flt)
+
+	if err != nil{
+		return nil, err
+	}
+
+	return res, nil
 }

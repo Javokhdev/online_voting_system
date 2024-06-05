@@ -9,7 +9,7 @@ import "election.proto";
 service CandidateService{
     rpc Create(CreateCandidateReq) returns(Void){}
     rpc GetById(ById) returns(GetCandidateRes){}
-    rpc GetAll(Void) returns(GetAllCandidateRes){}
+    rpc GetAll(Filter) returns(GetAllCandidateRes){}
     rpc Update(GetCandidateRes) returns(Void){}
     rpc Delete(ById) returns(Void){}
 }

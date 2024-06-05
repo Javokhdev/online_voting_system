@@ -19,15 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PublicVoteService_Create_FullMethodName       = "/voting.PublicVoteService/Create"
-	PublicVoteService_CreateVotes_FullMethodName  = "/voting.PublicVoteService/CreateVotes"
-	PublicVoteService_GetById_FullMethodName      = "/voting.PublicVoteService/GetById"
-	PublicVoteService_GetByVotesId_FullMethodName = "/voting.PublicVoteService/GetByVotesId"
-	PublicVoteService_GetAll_FullMethodName       = "/voting.PublicVoteService/GetAll"
-	PublicVoteService_GetAllVotes_FullMethodName  = "/voting.PublicVoteService/GetAllVotes"
-	PublicVoteService_Update_FullMethodName       = "/voting.PublicVoteService/Update"
-	PublicVoteService_UpdateVotes_FullMethodName  = "/voting.PublicVoteService/UpdateVotes"
-	PublicVoteService_Delete_FullMethodName       = "/voting.PublicVoteService/Delete"
+	PublicVoteService_Create_FullMethodName   = "/voting.PublicVoteService/Create"
+	PublicVoteService_GetById_FullMethodName  = "/voting.PublicVoteService/GetById"
+	PublicVoteService_GetAll_FullMethodName   = "/voting.PublicVoteService/GetAll"
+	PublicVoteService_Update_FullMethodName   = "/voting.PublicVoteService/Update"
+	PublicVoteService_Delete_FullMethodName   = "/voting.PublicVoteService/Delete"
+	PublicVoteService_GetVote_FullMethodName  = "/voting.PublicVoteService/GetVote"
+	PublicVoteService_GetVotes_FullMethodName = "/voting.PublicVoteService/GetVotes"
 )
 
 // PublicVoteServiceClient is the client API for PublicVoteService service.
@@ -35,14 +33,12 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PublicVoteServiceClient interface {
 	Create(ctx context.Context, in *CreatePublicVoteReq, opts ...grpc.CallOption) (*Void, error)
-	CreateVotes(ctx context.Context, in *CreateVoteReq, opts ...grpc.CallOption) (*Void, error)
 	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetPublicVoteRes, error)
-	GetByVotesId(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetVotesRes, error)
 	GetAll(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllPublicVoteRes, error)
-	GetAllVotes(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllVotesRes, error)
 	Update(ctx context.Context, in *GetPublicVoteRes, opts ...grpc.CallOption) (*Void, error)
-	UpdateVotes(ctx context.Context, in *GetVotesRes, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
+	GetVote(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetVoteById, error)
+	GetVotes(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllVotes, error)
 }
 
 type publicVoteServiceClient struct {
@@ -62,27 +58,9 @@ func (c *publicVoteServiceClient) Create(ctx context.Context, in *CreatePublicVo
 	return out, nil
 }
 
-func (c *publicVoteServiceClient) CreateVotes(ctx context.Context, in *CreateVoteReq, opts ...grpc.CallOption) (*Void, error) {
-	out := new(Void)
-	err := c.cc.Invoke(ctx, PublicVoteService_CreateVotes_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *publicVoteServiceClient) GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetPublicVoteRes, error) {
 	out := new(GetPublicVoteRes)
 	err := c.cc.Invoke(ctx, PublicVoteService_GetById_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *publicVoteServiceClient) GetByVotesId(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetVotesRes, error) {
-	out := new(GetVotesRes)
-	err := c.cc.Invoke(ctx, PublicVoteService_GetByVotesId_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -98,27 +76,9 @@ func (c *publicVoteServiceClient) GetAll(ctx context.Context, in *Filter, opts .
 	return out, nil
 }
 
-func (c *publicVoteServiceClient) GetAllVotes(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllVotesRes, error) {
-	out := new(GetAllVotesRes)
-	err := c.cc.Invoke(ctx, PublicVoteService_GetAllVotes_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *publicVoteServiceClient) Update(ctx context.Context, in *GetPublicVoteRes, opts ...grpc.CallOption) (*Void, error) {
 	out := new(Void)
 	err := c.cc.Invoke(ctx, PublicVoteService_Update_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *publicVoteServiceClient) UpdateVotes(ctx context.Context, in *GetVotesRes, opts ...grpc.CallOption) (*Void, error) {
-	out := new(Void)
-	err := c.cc.Invoke(ctx, PublicVoteService_UpdateVotes_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -134,19 +94,35 @@ func (c *publicVoteServiceClient) Delete(ctx context.Context, in *ById, opts ...
 	return out, nil
 }
 
+func (c *publicVoteServiceClient) GetVote(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetVoteById, error) {
+	out := new(GetVoteById)
+	err := c.cc.Invoke(ctx, PublicVoteService_GetVote_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *publicVoteServiceClient) GetVotes(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllVotes, error) {
+	out := new(GetAllVotes)
+	err := c.cc.Invoke(ctx, PublicVoteService_GetVotes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PublicVoteServiceServer is the server API for PublicVoteService service.
 // All implementations must embed UnimplementedPublicVoteServiceServer
 // for forward compatibility
 type PublicVoteServiceServer interface {
 	Create(context.Context, *CreatePublicVoteReq) (*Void, error)
-	CreateVotes(context.Context, *CreateVoteReq) (*Void, error)
 	GetById(context.Context, *ById) (*GetPublicVoteRes, error)
-	GetByVotesId(context.Context, *ById) (*GetVotesRes, error)
 	GetAll(context.Context, *Filter) (*GetAllPublicVoteRes, error)
-	GetAllVotes(context.Context, *Filter) (*GetAllVotesRes, error)
 	Update(context.Context, *GetPublicVoteRes) (*Void, error)
-	UpdateVotes(context.Context, *GetVotesRes) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
+	GetVote(context.Context, *ById) (*GetVoteById, error)
+	GetVotes(context.Context, *Filter) (*GetAllVotes, error)
 	mustEmbedUnimplementedPublicVoteServiceServer()
 }
 
@@ -157,29 +133,23 @@ type UnimplementedPublicVoteServiceServer struct {
 func (UnimplementedPublicVoteServiceServer) Create(context.Context, *CreatePublicVoteReq) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedPublicVoteServiceServer) CreateVotes(context.Context, *CreateVoteReq) (*Void, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateVotes not implemented")
-}
 func (UnimplementedPublicVoteServiceServer) GetById(context.Context, *ById) (*GetPublicVoteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
-}
-func (UnimplementedPublicVoteServiceServer) GetByVotesId(context.Context, *ById) (*GetVotesRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetByVotesId not implemented")
 }
 func (UnimplementedPublicVoteServiceServer) GetAll(context.Context, *Filter) (*GetAllPublicVoteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
-func (UnimplementedPublicVoteServiceServer) GetAllVotes(context.Context, *Filter) (*GetAllVotesRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllVotes not implemented")
-}
 func (UnimplementedPublicVoteServiceServer) Update(context.Context, *GetPublicVoteRes) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedPublicVoteServiceServer) UpdateVotes(context.Context, *GetVotesRes) (*Void, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateVotes not implemented")
-}
 func (UnimplementedPublicVoteServiceServer) Delete(context.Context, *ById) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedPublicVoteServiceServer) GetVote(context.Context, *ById) (*GetVoteById, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVote not implemented")
+}
+func (UnimplementedPublicVoteServiceServer) GetVotes(context.Context, *Filter) (*GetAllVotes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVotes not implemented")
 }
 func (UnimplementedPublicVoteServiceServer) mustEmbedUnimplementedPublicVoteServiceServer() {}
 
@@ -212,24 +182,6 @@ func _PublicVoteService_Create_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PublicVoteService_CreateVotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateVoteReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PublicVoteServiceServer).CreateVotes(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PublicVoteService_CreateVotes_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicVoteServiceServer).CreateVotes(ctx, req.(*CreateVoteReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _PublicVoteService_GetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ById)
 	if err := dec(in); err != nil {
@@ -244,24 +196,6 @@ func _PublicVoteService_GetById_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PublicVoteServiceServer).GetById(ctx, req.(*ById))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _PublicVoteService_GetByVotesId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ById)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PublicVoteServiceServer).GetByVotesId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PublicVoteService_GetByVotesId_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicVoteServiceServer).GetByVotesId(ctx, req.(*ById))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -284,24 +218,6 @@ func _PublicVoteService_GetAll_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PublicVoteService_GetAllVotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Filter)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PublicVoteServiceServer).GetAllVotes(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PublicVoteService_GetAllVotes_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicVoteServiceServer).GetAllVotes(ctx, req.(*Filter))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _PublicVoteService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPublicVoteRes)
 	if err := dec(in); err != nil {
@@ -316,24 +232,6 @@ func _PublicVoteService_Update_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PublicVoteServiceServer).Update(ctx, req.(*GetPublicVoteRes))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _PublicVoteService_UpdateVotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetVotesRes)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PublicVoteServiceServer).UpdateVotes(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PublicVoteService_UpdateVotes_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicVoteServiceServer).UpdateVotes(ctx, req.(*GetVotesRes))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -356,6 +254,42 @@ func _PublicVoteService_Delete_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PublicVoteService_GetVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ById)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicVoteServiceServer).GetVote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PublicVoteService_GetVote_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicVoteServiceServer).GetVote(ctx, req.(*ById))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PublicVoteService_GetVotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Filter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicVoteServiceServer).GetVotes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PublicVoteService_GetVotes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicVoteServiceServer).GetVotes(ctx, req.(*Filter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PublicVoteService_ServiceDesc is the grpc.ServiceDesc for PublicVoteService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -368,36 +302,28 @@ var PublicVoteService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PublicVoteService_Create_Handler,
 		},
 		{
-			MethodName: "CreateVotes",
-			Handler:    _PublicVoteService_CreateVotes_Handler,
-		},
-		{
 			MethodName: "GetById",
 			Handler:    _PublicVoteService_GetById_Handler,
-		},
-		{
-			MethodName: "GetByVotesId",
-			Handler:    _PublicVoteService_GetByVotesId_Handler,
 		},
 		{
 			MethodName: "GetAll",
 			Handler:    _PublicVoteService_GetAll_Handler,
 		},
 		{
-			MethodName: "GetAllVotes",
-			Handler:    _PublicVoteService_GetAllVotes_Handler,
-		},
-		{
 			MethodName: "Update",
 			Handler:    _PublicVoteService_Update_Handler,
 		},
 		{
-			MethodName: "UpdateVotes",
-			Handler:    _PublicVoteService_UpdateVotes_Handler,
-		},
-		{
 			MethodName: "Delete",
 			Handler:    _PublicVoteService_Delete_Handler,
+		},
+		{
+			MethodName: "GetVote",
+			Handler:    _PublicVoteService_GetVote_Handler,
+		},
+		{
+			MethodName: "GetVotes",
+			Handler:    _PublicVoteService_GetVotes_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

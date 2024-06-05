@@ -9,40 +9,36 @@ import "election.proto";
 
 service PublicVoteService{
     rpc Create(CreatePublicVoteReq) returns(Void){}
-    rpc CreateVotes(CreateVoteReq) returns(Void){}
     rpc GetById(ById) returns(GetPublicVoteRes){}
-    rpc GetByVotesId(ById) returns(GetVotesRes){}
     rpc GetAll(Filter) returns(GetAllPublicVoteRes){}
-    rpc GetAllVotes(Filter) returns(GetAllVotesRes){}
     rpc Update(GetPublicVoteRes) returns(Void){}
-    rpc UpdateVotes(GetVotesRes) returns(Void){}
     rpc Delete(ById) returns(Void){}
+    rpc GetVote(ById) returns(GetVoteById){}
+    rpc GetVotes(Filter) returns(GetAllVotes){}
 }
 
 message CreatePublicVoteReq{
     string election_id = 1;
     string public_id = 2;
+    string candidate_id = 3;
 }
 
-message CreateVoteReq{
-    string candidate_id = 1;
-}
 
 message GetPublicVoteRes{
     string id = 1;
     string election_id = 2;
     string public_id = 3;
+    string candidate_id = 4;
 }
 
-message GetVotesRes{
-    string id = 1;
-    string candidate_id = 2;
+message GetVoteById{
+    string candidate_id = 1;
+    int32 count = 2;
+}
+message GetAllVotes{
+    repeated GetVoteById votes = 1;
 }
 
 message GetAllPublicVoteRes{
     repeated GetPublicVoteRes PublicVotes = 1;
-}
-
-message GetAllVotesRes{
-    repeated GetVotesRes Votes = 1;
 }

@@ -32,7 +32,7 @@ const (
 type CandidateServiceClient interface {
 	Create(ctx context.Context, in *CreateCandidateReq, opts ...grpc.CallOption) (*Void, error)
 	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetCandidateRes, error)
-	GetAll(ctx context.Context, in *Void, opts ...grpc.CallOption) (*GetAllCandidateRes, error)
+	GetAll(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllCandidateRes, error)
 	Update(ctx context.Context, in *GetCandidateRes, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
 }
@@ -63,7 +63,7 @@ func (c *candidateServiceClient) GetById(ctx context.Context, in *ById, opts ...
 	return out, nil
 }
 
-func (c *candidateServiceClient) GetAll(ctx context.Context, in *Void, opts ...grpc.CallOption) (*GetAllCandidateRes, error) {
+func (c *candidateServiceClient) GetAll(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllCandidateRes, error) {
 	out := new(GetAllCandidateRes)
 	err := c.cc.Invoke(ctx, CandidateService_GetAll_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -96,7 +96,7 @@ func (c *candidateServiceClient) Delete(ctx context.Context, in *ById, opts ...g
 type CandidateServiceServer interface {
 	Create(context.Context, *CreateCandidateReq) (*Void, error)
 	GetById(context.Context, *ById) (*GetCandidateRes, error)
-	GetAll(context.Context, *Void) (*GetAllCandidateRes, error)
+	GetAll(context.Context, *Filter) (*GetAllCandidateRes, error)
 	Update(context.Context, *GetCandidateRes) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
 	mustEmbedUnimplementedCandidateServiceServer()
@@ -112,7 +112,7 @@ func (UnimplementedCandidateServiceServer) Create(context.Context, *CreateCandid
 func (UnimplementedCandidateServiceServer) GetById(context.Context, *ById) (*GetCandidateRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
-func (UnimplementedCandidateServiceServer) GetAll(context.Context, *Void) (*GetAllCandidateRes, error) {
+func (UnimplementedCandidateServiceServer) GetAll(context.Context, *Filter) (*GetAllCandidateRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedCandidateServiceServer) Update(context.Context, *GetCandidateRes) (*Void, error) {
@@ -171,7 +171,7 @@ func _CandidateService_GetById_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _CandidateService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
+	in := new(Filter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func _CandidateService_GetAll_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: CandidateService_GetAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CandidateServiceServer).GetAll(ctx, req.(*Void))
+		return srv.(CandidateServiceServer).GetAll(ctx, req.(*Filter))
 	}
 	return interceptor(ctx, in, info, handler)
 }
