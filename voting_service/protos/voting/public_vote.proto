@@ -3,3 +3,54 @@ syntax = "proto3";
 option go_package = "genproto/voting/";
 
 package voting;
+
+service PublicVoteService{
+    rpc Create(CreatePublicVoteReq) returns(Void){}
+    rpc CreateVotes(CreateVoteReq) returns(Void){}
+    rpc GetById(ById) returns(GetPublicVoteRes){}
+    rpc GetByVotesId(ById) returns(GetVotesRes){}
+    rpc GetAll(Filter) returns(GetAllPublicVoteRes){}
+    rpc GetAllVotes(Filter) returns(GetAllVotesRes){}
+    rpc Update(GetPublicVoteRes) returns(Void){}
+    rpc UpdateVotes(GetVotesRes) returns(Void){}
+    rpc Delete(ById) returns(Void){}
+}
+
+message CreatePublicVoteReq{
+    string election_id = 1;
+    string public_id = 2;
+}
+
+message CreateVoteReq{
+    string candidate_id = 1;
+}
+
+message GetPublicVoteRes{
+    string id = 1;
+    string election_id = 2;
+    string public_id = 3;
+}
+
+message GetVotesRes{
+    string id = 1;
+    string candidate_id = 2;
+}
+
+message GetAllPublicVoteRes{
+    repeated GetPublicVoteRes PublicVotes = 1;
+}
+
+message GetAllVotesRes{
+    repeated GetVotesRes Votes = 1;
+}
+
+message Filter{
+    int32 Limit = 1;
+    int32 Offset = 2;
+}
+
+message ById{
+    string id = 1;
+}
+
+message Void{}
