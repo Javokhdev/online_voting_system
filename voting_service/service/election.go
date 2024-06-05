@@ -4,7 +4,8 @@ import (
 	"context"
 	"log/slog"
 	v "voting_service/genproto/voting"
-	st "voting_service/storage/postgresql"
+	// st "voting_service/storage/postgresql"
+	st "voting_service/storage"
 )
 
 type ElectionService struct {
@@ -20,7 +21,7 @@ func NewElectionService(storage *st.Storage) *ElectionService {
 
 func (s *ElectionService) Create(ctx context.Context, election *v.CreateElectionReq) (*v.Void, error) {
 	slog.Info("CreateElection Service called", "election", election.GetName())
-	_, err := s.storage.ElectionS.Create(election)
+	_, err := s.storage.ElectionS().Create(election)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +31,7 @@ func (s *ElectionService) Create(ctx context.Context, election *v.CreateElection
 
 func (s *ElectionService) GetById(ctx context.Context, id *v.ById) (*v.GetElectionRes, error) {
 	slog.Info("GetElectionById Service called", "election_id", id.GetId())
-	election, err := s.storage.ElectionS.GetById(id)
+	election, err := s.storage.ElectionS().GetById(id)
 
 	if err != nil {
 		return nil, err
@@ -42,7 +43,7 @@ func (s *ElectionService) GetById(ctx context.Context, id *v.ById) (*v.GetElecti
 func (s *ElectionService) GetAll(ctx context.Context, flt *v.Filter) (*v.GetAllElectionRes, error) {
 	slog.Info("GetAllElections Service called")
 
-	res, err := s.storage.ElectionS.GetAll(flt)
+	res, err := s.storage.ElectionS().GetAll(flt)
 
 	if err != nil{
 		return nil, err
@@ -53,14 +54,14 @@ func (s *ElectionService) GetAll(ctx context.Context, flt *v.Filter) (*v.GetAllE
 
 func (s *ElectionService) Update(ctx context.Context,election *v.GetElectionRes) (*v.Void, error) {
 	slog.Info("UpdateElection Service called", "election", election.GetId())
-	_, err := s.storage.ElectionS.Update(election)
+	_, err := s.storage.ElectionS().Update(election)
 
 	return nil, err
 }
 
 func (s *ElectionService) Delete(ctx context.Context, id *v.ById) (*v.Void, error) {
 	slog.Info("DeleteElection Service called", "election_id", id)
-	_, err := s.storage.ElectionS.Delete(id)
+	_, err := s.storage.ElectionS().Delete(id)
 
 	return nil, err
 }

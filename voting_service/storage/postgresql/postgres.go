@@ -4,15 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"voting_service/config"
+	"voting_service/storage"
 
 	_ "github.com/lib/pq"
 )
 
 type Storage struct {
 	Db          *sql.DB
-	ElectionS   *ElectionStorage
-	CandidateS  *CandidateStorage
-	PublicVoteS *PublicVoteStorage
+	ElectionS   storage.ElectionI
+	CandidateS  storage.CandidateI
+	PublicVoteS storage.PublicVoteI
 }
 
 func NewPostgresStorage(config config.Config) (*Storage, error) {
@@ -38,4 +39,28 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 		CandidateS:  cr,
 		PublicVoteS: pr,
 	}, nil
+}
+
+func (s *Storage) Election()storage.ElectionI{
+	if s.ElectionS == nil {
+		s.ElectionS = NewElectionStorage(s.Db)
+	}
+
+	return s.ElectionS
+}
+
+func (s *Storage) Candidate()storage.CandidateI{
+	if s.CandidateS == nil {
+		s.CandidateS = NewCandidateStorage(s.Db)
+	}
+
+	return s.CandidateS
+}
+
+func (s *Storage) PublicVote()storage.PublicVoteI{
+	if s.PublicVoteS == nil {
+		s.PublicVoteS = NewPublicVoteStorage(s.Db)
+	}
+
+	return s.PublicVoteS
 }
