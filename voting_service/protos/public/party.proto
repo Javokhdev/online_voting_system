@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-option go_package = "genproto/public/";
+option go_package = "genproto/party/";
 
-package public;
+package party;
 
-import "voting/election.proto";
 
 service PartyService{
     rpc Create(CreatePartyReq) returns(Void){}
@@ -28,6 +27,17 @@ message GetPartyRes{
     string opened_date = 4;
     string description = 5;
 }
+
+message Filter{
+    string name = 1;
+    string opened_date = 2;
+} 
+
+message ById{
+    string id = 1;
+}
+
+message Void{}
 
 message GetAllPartyRes{
     repeated GetPartyRes Parties = 1;

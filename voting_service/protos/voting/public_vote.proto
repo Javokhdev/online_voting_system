@@ -45,8 +45,8 @@ message GetAllVotesRes{
 }
 
 message Filter{
-    int32 Limit = 1;
-    int32 Offset = 2;
+    string election_id = 1;
+    string candidate_id = 2;
 }
 
 message ById{
