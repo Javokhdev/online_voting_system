@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	HTTPPort string
+	TCP_PORT string
 
 	DB_HOST     string
 	DB_PORT     int
@@ -28,6 +29,7 @@ func Load() Config {
 	config := Config{}
 
 	config.HTTPPort = cast.ToString(coalesce("HTTP_PORT", ":8080"))
+	config.TCP_PORT = cast.ToString(coalesce("TCP_PORT", ":50051"))
 
 	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
 	config.DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))
