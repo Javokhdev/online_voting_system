@@ -9,7 +9,7 @@ import "public.proto";
 service PartyService{
     rpc Create(CreatePartyReq) returns(Void){}
     rpc GetById(ById) returns(GetPartyRes){}
-    rpc GetAll(FilterParty) returns(GetAllPartyRes){}
+    rpc GetAll(Filter) returns(GetAllPartyRes){}
     rpc Update(GetPartyRes) returns(Void){}
     rpc Delete(ById) returns(Void){}
 }
@@ -29,10 +29,6 @@ message GetPartyRes{
     string description = 5;
 }
 
-message FilterParty{
-    int32 limit = 1;
-    int32 offset = 2;
-} 
 
 message GetAllPartyRes{
     repeated GetPartyRes Parties = 1;
