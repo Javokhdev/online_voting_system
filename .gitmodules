@@ -1,0 +1,12 @@
+[submodule "protos"]
+	path = protos
+	url = git@github.com:axadjonovsardorbek/protos.git
+[submodule "api_gateway/protos"]
+	path = api_gateway/protos
+	url = git@github.com:axadjonovsardorbek/protos.git
+[submodule "voting_service/protos"]
+	path = voting_service/protos
+	url = git@github.com:axadjonovsardorbek/protos.git
+[submodule "public_service/protos"]
+	path = public_service/protos
+	url = git@github.com:axadjonovsardorbek/protos.git
