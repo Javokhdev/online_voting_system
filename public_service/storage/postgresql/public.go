@@ -24,7 +24,7 @@ func (ps *PublicSotage) Create(public *p.CreatePublicReq) (*p.Void, error) {
 func (ps *PublicSotage) GetById(id *p.ById) (*p.GetPublicRes, error) {
 	public := &p.GetPublicRes{}
 	row := ps.Db.QueryRow("SELECT id, first_name, last_name, birthday, gender, nation, party_id FROM publics WHERE id = $1", id.GetId())
-	err := row.Scan(public.id, &public.FirstName, &public.LastName, &public.Birthday, &public.Gender, &public.Nation, &public.PartyId)
+	err := row.Scan(&public.Id, &public.FirstName, &public.LastName, &public.Birthday, &public.Gender, &public.Nation, &public.PartyId)
 	if err != nil {
 		return nil, err
 	}

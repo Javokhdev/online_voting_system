@@ -32,7 +32,7 @@ const (
 type PublicServiceClient interface {
 	Create(ctx context.Context, in *CreatePublicReq, opts ...grpc.CallOption) (*Void, error)
 	GetById(ctx context.Context, in *ById, opts ...grpc.CallOption) (*GetPublicRes, error)
-	GetAll(ctx context.Context, in *FilterPublic, opts ...grpc.CallOption) (*GetAllPublicRes, error)
+	GetAll(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllPublicRes, error)
 	Update(ctx context.Context, in *GetPublicRes, opts ...grpc.CallOption) (*Void, error)
 	Delete(ctx context.Context, in *ById, opts ...grpc.CallOption) (*Void, error)
 }
@@ -63,7 +63,7 @@ func (c *publicServiceClient) GetById(ctx context.Context, in *ById, opts ...grp
 	return out, nil
 }
 
-func (c *publicServiceClient) GetAll(ctx context.Context, in *FilterPublic, opts ...grpc.CallOption) (*GetAllPublicRes, error) {
+func (c *publicServiceClient) GetAll(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*GetAllPublicRes, error) {
 	out := new(GetAllPublicRes)
 	err := c.cc.Invoke(ctx, PublicService_GetAll_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -96,7 +96,7 @@ func (c *publicServiceClient) Delete(ctx context.Context, in *ById, opts ...grpc
 type PublicServiceServer interface {
 	Create(context.Context, *CreatePublicReq) (*Void, error)
 	GetById(context.Context, *ById) (*GetPublicRes, error)
-	GetAll(context.Context, *FilterPublic) (*GetAllPublicRes, error)
+	GetAll(context.Context, *Filter) (*GetAllPublicRes, error)
 	Update(context.Context, *GetPublicRes) (*Void, error)
 	Delete(context.Context, *ById) (*Void, error)
 	mustEmbedUnimplementedPublicServiceServer()
@@ -112,7 +112,7 @@ func (UnimplementedPublicServiceServer) Create(context.Context, *CreatePublicReq
 func (UnimplementedPublicServiceServer) GetById(context.Context, *ById) (*GetPublicRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
-func (UnimplementedPublicServiceServer) GetAll(context.Context, *FilterPublic) (*GetAllPublicRes, error) {
+func (UnimplementedPublicServiceServer) GetAll(context.Context, *Filter) (*GetAllPublicRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedPublicServiceServer) Update(context.Context, *GetPublicRes) (*Void, error) {
@@ -171,7 +171,7 @@ func _PublicService_GetById_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _PublicService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FilterPublic)
+	in := new(Filter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func _PublicService_GetAll_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: PublicService_GetAll_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicServiceServer).GetAll(ctx, req.(*FilterPublic))
+		return srv.(PublicServiceServer).GetAll(ctx, req.(*Filter))
 	}
 	return interceptor(ctx, in, info, handler)
 }

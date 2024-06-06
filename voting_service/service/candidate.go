@@ -22,10 +22,8 @@ func NewCandidateService(storage *st.Storage) *CandidateService {
 func (s *CandidateService) Create(ctx context.Context,candidate *v.CreateCandidateReq) (*v.Void, error) {
 	slog.Info("CreateCandidate Service called", "candidate", candidate)
 	_, err := s.storage.CandidateS.Create(candidate)
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
+
+	return nil, err
 }
 
 func (s *CandidateService) GetById(ctx context.Context, id *v.ById) (*v.GetCandidateRes, error) {
