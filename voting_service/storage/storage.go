@@ -5,7 +5,7 @@ import (
 	v "voting_service/genproto/voting"
 )
 
-type Storage interface {
+type StorageI interface {
 	Db() *sql.DB
 	ElectionS() ElectionI
 	CandidateS() CandidateI
