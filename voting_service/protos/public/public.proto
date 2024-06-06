@@ -32,7 +32,7 @@ message GetPublicRes{
 }
 
 message GetAllPublicRes{
-    repeated GetPublicRes Parties = 1;
+    repeated GetPublicRes Publics = 1;
 }
 
 message Filter{

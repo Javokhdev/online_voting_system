@@ -23,7 +23,7 @@ func (ps *PublicSotage) Create(public *p.CreatePublicReq) (*p.Void, error) {
 
 func (ps *PublicSotage) GetById(id *p.ById) (*p.GetPublicRes, error) {
 	public := &p.GetPublicRes{}
-	row := ps.Db.QueryRow("SELECT id, first_name, last_name, birthday, gender, nation, party_id FROM publics WHERE id = $1", id.GetId())
+	row := ps.Db.QueryRow("SELECT id, first_name, last_name, birthday, gender, nation, party_id FROM publics WHERE id = $1 and deleted_at = 0", id.GetId())
 	err := row.Scan(&public.Id, &public.FirstName, &public.LastName, &public.Birthday, &public.Gender, &public.Nation, &public.PartyId)
 	if err != nil {
 		return nil, err
@@ -44,19 +44,19 @@ func (ps *PublicSotage) GetAll(flt *p.Filter) (*p.GetAllPublicRes, error) {
 		if err := rows.Scan(&public.Id, &public.FirstName, &public.LastName, &public.Birthday, &public.Gender, &public.Nation, &public.PartyId); err != nil {
 			return nil, err
 		}
-		publics.Parties = append(publics.Parties, public)
+		publics.Publics = append(publics.Publics, public)
 	}
 	return publics, nil
 }
 
 func (ps *PublicSotage) Update(public *p.GetPublicRes) (*p.Void, error) {
-	_, err := ps.Db.Exec("UPDATE publics SET first_name = $1, last_name = $2, birthday = $3, gender = $4, nation = $5, party_id = $6 WHERE id = $7",
+	_, err := ps.Db.Exec("UPDATE publics SET first_name = $1, last_name = $2, birthday = $3, gender = $4, nation = $5, party_id = $6, updated_at = now() WHERE id = $7 and deleted_at = 0",
 	public.GetFirstName(), public.GetLastName(), public.GetBirthday(), public.GetGender(), public.GetNation(), public.GetPartyId(), public.GetId())
 	return nil, err
 }
 
 func (ps *PublicSotage) Delete(id *p.ById) (*p.Void, error) {
-	_, err := ps.Db.Exec("Update publics SET deleted_at = Extract(epoch from NOW()) WHERE id = $1", id.GetId())
+	_, err := ps.Db.Exec("Update publics SET deleted_at = Extract(epoch from NOW()) WHERE id = $1 and deleted_at = 0", id.GetId())
 	if err != nil {
 		return nil, err
 	}

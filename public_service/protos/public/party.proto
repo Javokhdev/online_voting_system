@@ -29,7 +29,6 @@ message GetPartyRes{
     string description = 5;
 }
 
-
 message GetAllPartyRes{
     repeated GetPartyRes Parties = 1;
 }
