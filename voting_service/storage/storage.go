@@ -26,6 +26,8 @@ type CandidateI interface {
 	GetAll(*v.Filter) (*v.GetAllCandidateRes, error)
 	Update(*v.GetCandidateRes) (*v.Void, error)
 	Delete(*v.ById) (*v.Void, error)
+	CheckParty(*v.CreateCandidateReq)(bool)
+	CheckPublic(*v.CreateCandidateReq)(bool)
 }
 
 type PublicVoteI interface {

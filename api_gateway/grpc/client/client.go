@@ -18,17 +18,23 @@ type GrpcClients struct {
 }
 
 func NewGrpcClients(cfg *config.Config) (*GrpcClients, error) {
-	conn, err := grpc.NewClient(cfg.SERVICE_HOST+cfg.SERVICE_PORT,
+	connVot, err := grpc.NewClient(cfg.VOTING_SERVICE_HOST+cfg.VOTING_SERVICE_PORT,
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		return nil, err
+	}
+
+	connPub, err := grpc.NewClient(cfg.PUBLIC_SERVICE_HOST+cfg.PUBLIC_SERVICE_PORT,
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
 	return &GrpcClients{
-		ElectionService:   voting.NewElectionServiceClient(conn),
-		CandidateService:  voting.NewCandidateServiceClient(conn),
-		PublicVoteService: voting.NewPublicVoteServiceClient(conn),
-		PartyService:      public.NewPartyServiceClient(conn),
-		PublicService:     public.NewPublicServiceClient(conn),
+		ElectionService:   voting.NewElectionServiceClient(connVot),
+		CandidateService:  voting.NewCandidateServiceClient(connVot),
+		PublicVoteService: voting.NewPublicVoteServiceClient(connVot),
+		PartyService:      public.NewPartyServiceClient(connPub),
+		PublicService:     public.NewPublicServiceClient(connPub),
 	}, nil
 }

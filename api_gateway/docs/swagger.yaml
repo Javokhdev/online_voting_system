@@ -1,5 +1,42 @@
 basePath: /
 definitions:
+  public.CreatePartyReq:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      opened_date:
+        type: string
+      slogan:
+        type: string
+    type: object
+  public.CreatePublicReq:
+    properties:
+      birthday:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      nation:
+        type: string
+      party_id:
+        type: string
+    type: object
+  public.Void:
+    type: object
+  voting.CreateCandidateReq:
+    properties:
+      election_id:
+        type: string
+      party_id:
+        type: string
+      public_id:
+        type: string
+    type: object
   voting.CreateElectionReq:
     properties:
       date:
@@ -29,6 +66,36 @@ info:
   contact: {}
   title: Online Voting System Swagger UI
 paths:
+  /candidate/create:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for creating a new candidate
+      parameters:
+      - description: Candidate creation request payload
+        in: body
+        name: candidate
+        required: true
+        schema:
+          $ref: '#/definitions/voting.CreateCandidateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created candidate
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to create candidate
+          schema:
+            type: string
+      summary: Create a new candidate
+      tags:
+      - Candidate
   /election/create:
     post:
       consumes:
@@ -147,6 +214,68 @@ paths:
       summary: Update election
       tags:
       - Election
+  /party/create:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        Endpoint for creating a new party
+        create_party
+      parameters:
+      - description: Party creation request payload
+        in: body
+        name: party
+        required: true
+        schema:
+          $ref: '#/definitions/public.CreatePartyReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created party
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to create party
+          schema:
+            type: string
+      summary: Create a new party
+      tags:
+      - Party
+  /public/create:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for creating a new public
+      parameters:
+      - description: Public creation request payload
+        in: body
+        name: party
+        required: true
+        schema:
+          $ref: '#/definitions/public.CreatePublicReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created public
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to create public
+          schema:
+            type: string
+      summary: Create a new public
+      tags:
+      - Public
 securityDefinitions:
   BearerAuth:
     in: header

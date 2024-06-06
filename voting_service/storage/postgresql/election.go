@@ -8,6 +8,7 @@ import (
 
 type ElectionStorage struct {
 	db *sql.DB
+	
 }
 
 func NewElectionStorage(db *sql.DB) *ElectionStorage {
@@ -59,3 +60,35 @@ func (s *ElectionStorage) Delete(id *v.ById) (*v.Void, error) {
 
 	return nil, err
 }
+
+// func (s *ElectionStorage) CheckPublic(id string) bool{
+
+// 	var findId string
+
+// 	// row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id)
+
+
+// 	err := row.Scan(&findId)
+
+// 	if err != nil{
+// 		return false
+// 	}
+
+// 	return findId == id
+// }
+
+// func (s *ElectionStorage) CheckParty(id string) bool{
+
+// 	var findId string
+
+// 	// row := s.dbPub.QueryRow("SELECT id FROM parties WHERE id = $1 and deleted_at = 0", id)
+
+
+// 	err := row.Scan(&findId)
+
+// 	if err != nil{
+// 		return false
+// 	}
+
+// 	return findId == id
+// }

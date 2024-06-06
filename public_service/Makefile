@@ -7,7 +7,7 @@ exp:
 	export DBURL='postgres://postgres:root@localhost:5432/public?sslmode=disable'
 
 mig-up:
-	migrate -path migrations -database 'postgres://postgres:root@localhost:5432/public?sslmode=disable' -verbose up
+	migrate -path migrations -database 'postgres://postgres:1111@localhost:5432/public?sslmode=disable' -verbose up
 
 mig-down:
 	migrate -path migrations -database ${DBURL} -verbose down

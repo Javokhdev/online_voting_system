@@ -27,6 +27,10 @@ func NewGin(handler *handler.Handler) *gin.Engine {
 	r.GET("/election/getbyid", handler.GetByIdElection)
 	r.GET("/election/getall", handler.GetAllElection)
 	r.PUT("/election/update", handler.UpdateElection)
+
+	r.POST("/party/create", handler.CreateParty)
+	r.POST("/public/create", handler.CreatePublic)
+	r.POST("/candidate/create", handler.CreateCandidate)
 	// r.Use(Middleware())
 
 	return r

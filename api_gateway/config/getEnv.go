@@ -9,8 +9,11 @@ import (
 )
 
 type Config struct {
-	SERVICE_HOST string
-	SERVICE_PORT string
+	VOTING_SERVICE_HOST string
+	VOTING_SERVICE_PORT string
+
+	PUBLIC_SERVICE_HOST string
+	PUBLIC_SERVICE_PORT string
 
 	HTTP_PORT string
 
@@ -23,8 +26,12 @@ func Load() Config {
 
 	config := Config{}
 
-	config.SERVICE_HOST = cast.ToString(coalesce("SERVICE_HOST", "localhost"))
-	config.SERVICE_PORT = cast.ToString(coalesce("SERVICE_PORT", ":50051"))
+	config.VOTING_SERVICE_HOST = cast.ToString(coalesce("VOTING_SERVICE_HOST", "localhost"))
+	config.VOTING_SERVICE_PORT = cast.ToString(coalesce("VOTING_SERVICE_PORT", ":50051"))
+
+	config.PUBLIC_SERVICE_HOST = cast.ToString(coalesce("PUBLIC_SERVICE_HOST", "localhost"))
+	config.PUBLIC_SERVICE_PORT = cast.ToString(coalesce("PUBLIC_SERVICE_PORT", ":50050"))
+
 	config.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", ":7070"))
 
 	return config

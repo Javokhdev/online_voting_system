@@ -15,6 +15,52 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/candidate/create": {
+            "post": {
+                "description": "Endpoint for creating a new candidate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Candidate"
+                ],
+                "summary": "Create a new candidate",
+                "parameters": [
+                    {
+                        "description": "Candidate creation request payload",
+                        "name": "candidate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/voting.CreateCandidateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created candidate",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create candidate",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/election/create": {
             "post": {
                 "description": "Endpoint for creating a new election",
@@ -196,9 +242,158 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/party/create": {
+            "post": {
+                "description": "Endpoint for creating a new party\ncreate_party",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Party"
+                ],
+                "summary": "Create a new party",
+                "parameters": [
+                    {
+                        "description": "Party creation request payload",
+                        "name": "party",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/public.CreatePartyReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created party",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create party",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/create": {
+            "post": {
+                "description": "Endpoint for creating a new public",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Create a new public",
+                "parameters": [
+                    {
+                        "description": "Public creation request payload",
+                        "name": "party",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/public.CreatePublicReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created public",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create public",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "public.CreatePartyReq": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "opened_date": {
+                    "type": "string"
+                },
+                "slogan": {
+                    "type": "string"
+                }
+            }
+        },
+        "public.CreatePublicReq": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "nation": {
+                    "type": "string"
+                },
+                "party_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "public.Void": {
+            "type": "object"
+        },
+        "voting.CreateCandidateReq": {
+            "type": "object",
+            "properties": {
+                "election_id": {
+                    "type": "string"
+                },
+                "party_id": {
+                    "type": "string"
+                },
+                "public_id": {
+                    "type": "string"
+                }
+            }
+        },
         "voting.CreateElectionReq": {
             "type": "object",
             "properties": {

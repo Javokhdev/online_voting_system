@@ -18,6 +18,12 @@ type Config struct {
 	DB_PASSWORD string
 	DB_NAME     string
 
+	PUB_DB_HOST     string
+	PUB_DB_PORT     int
+	PUB_DB_USER     string
+	PUB_DB_PASSWORD string
+	PUB_DB_NAME     string
+
 	LOG_PATH string
 }
 
@@ -34,8 +40,14 @@ func Load() Config {
 	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
 	config.DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))
 	config.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
-	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "root"))
+	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "1111"))
 	config.DB_NAME = cast.ToString(coalesce("DB_NAME", "voting"))
+
+	config.PUB_DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
+	config.PUB_DB_PORT = cast.ToInt(coalesce("DB_PORT", 5432))
+	config.PUB_DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
+	config.PUB_DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "1111"))
+	config.PUB_DB_NAME = cast.ToString(coalesce("DB_NAME", "public"))
 
 	config.LOG_PATH = cast.ToString(coalesce("LOG_PATH", "logs/info.log"))
 

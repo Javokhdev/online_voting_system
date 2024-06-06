@@ -2,17 +2,19 @@ package postgresql
 
 import (
 	"database/sql"
+	"errors"
 	v "voting_service/genproto/voting"
 
 	"github.com/google/uuid"
 )
 
 type PublicVoteStorage struct {
-	db *sql.DB
+	db    *sql.DB
+	dbPub *sql.DB
 }
 
-func NewPublicVoteStorage(db *sql.DB) *PublicVoteStorage {
-	return &PublicVoteStorage{db: db}
+func NewPublicVoteStorage(db *sql.DB, dbPub *sql.DB) *PublicVoteStorage {
+	return &PublicVoteStorage{db: db, dbPub: dbPub}
 }
 
 func (s *PublicVoteStorage) Create(publicVote *v.CreatePublicVoteReq) (*v.Void, error) {
@@ -31,9 +33,14 @@ func (s *PublicVoteStorage) Create(publicVote *v.CreatePublicVoteReq) (*v.Void, 
 	}()
 
 	id := uuid.New().String()
-	_, err = tz.Exec("INSERT INTO public_votes (id, election_id, public_id) VALUES ($1, $2, $3)",
-	id, publicVote.GetElectionId(), publicVote.GetPublicId())
 
+	if !(s.CheckPublic(publicVote.GetPublicId())) {
+		err := errors.New("error while creating")
+		return nil, err
+	}
+
+	_, err = tz.Exec("INSERT INTO public_votes (id, election_id, public_id) VALUES ($1, $2, $3)",
+		id, publicVote.GetElectionId(), publicVote.GetPublicId())
 
 	id = uuid.New().String()
 	_, err = tz.Exec("INSERT INTO votes (id, candidate_id) VALUES ($1, $2)",
@@ -80,7 +87,7 @@ func (s *PublicVoteStorage) Delete(id *v.ById) (*v.Void, error) {
 	return nil, err
 }
 
-func (s *PublicVoteStorage) GetVote(vote *v.ById)(*v.GetVoteById, error){
+func (s *PublicVoteStorage) GetVote(vote *v.ById) (*v.GetVoteById, error) {
 
 	row, err := s.db.Query("select candidate_id, count(id) from votes where candidate_id = $1 group by candidate_id", vote.GetId())
 	if err != nil {
@@ -100,7 +107,7 @@ func (s *PublicVoteStorage) GetVote(vote *v.ById)(*v.GetVoteById, error){
 	return res, nil
 }
 
-func (s *PublicVoteStorage) GetVotes(flt *v.Filter)(*v.GetAllVotes, error){
+func (s *PublicVoteStorage) GetVotes(flt *v.Filter) (*v.GetAllVotes, error) {
 
 	rows, err := s.db.Query("select candidate_id, count(id) from votes group by candidate_id LIMIT $1 OFFSET $2", flt.GetLimit(), flt.GetOffset())
 
@@ -120,4 +127,19 @@ func (s *PublicVoteStorage) GetVotes(flt *v.Filter)(*v.GetAllVotes, error){
 		votes.Votes = append(votes.Votes, vote)
 	}
 	return votes, nil
+}
+
+func (s *PublicVoteStorage) CheckPublic(id string) bool {
+
+	var findId string
+
+	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id)
+
+	err := row.Scan(&findId)
+
+	if err != nil {
+		return false
+	}
+
+	return findId == id
 }

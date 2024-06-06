@@ -2,22 +2,25 @@ package postgresql
 
 import (
 	"database/sql"
-	"github.com/google/uuid"
 	v "voting_service/genproto/voting"
+
+	"github.com/google/uuid"
 )
 
 type CandidateStorage struct {
-	db *sql.DB
+	db    *sql.DB
+	dbPub *sql.DB
 }
 
-func NewCandidateStorage(db *sql.DB) *CandidateStorage {
-	return &CandidateStorage{db: db}
+func NewCandidateStorage(db *sql.DB, dbPub *sql.DB) *CandidateStorage {
+	return &CandidateStorage{db: db, dbPub: dbPub}
 }
 
 func (s *CandidateStorage) Create(candidate *v.CreateCandidateReq) (*v.Void, error) {
 	id := uuid.New().String()
-	_, err := s.db.Exec("INSERT INTO candidates (id, election_id, public_id, party_id) VALUES ($1, $2, $3, $4)", 
-	id, candidate.GetElectionId(), candidate.GetPublicId(), candidate.GetPartyId())
+
+	_, err := s.db.Exec("INSERT INTO candidates (id, election_id, public_id, party_id) VALUES ($1, $2, $3, $4)",
+		id, candidate.GetElectionId(), candidate.GetPublicId(), candidate.GetPartyId())
 
 	return nil, err
 }
@@ -61,4 +64,34 @@ func (s *CandidateStorage) Update(candidate *v.GetCandidateRes) (*v.Void, error)
 func (s *CandidateStorage) Delete(id *v.ById) (*v.Void, error) {
 	_, err := s.db.Exec("Update candidates SET deleted = Extract(epoch from now()) WHERE id = $1", id.GetId())
 	return nil, err
+}
+
+func (s *CandidateStorage) CheckPublic(id *v.CreateCandidateReq) bool {
+
+	var findId string
+
+	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id.GetPublicId())
+
+	err := row.Scan(&findId)
+
+	if err != nil {
+		return false
+	}
+
+	return findId != ""
+}
+
+func (s *CandidateStorage) CheckParty(id *v.CreateCandidateReq) bool {
+
+	var findId string
+
+	row := s.dbPub.QueryRow("SELECT id FROM parties WHERE id = $1 and deleted_at = 0", id.GetPartyId())
+
+	err := row.Scan(&findId)
+
+	if err != nil {
+		return false
+	}
+
+	return findId != ""
 }
