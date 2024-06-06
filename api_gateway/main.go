@@ -8,7 +8,6 @@ import (
 	"log"
 )
 
-
 func main() {
 	cfg := config.Load()
 
@@ -17,7 +16,6 @@ func main() {
 		log.Fatalf("error while connecting clients. err: %s", err.Error())
 	}
 
-	
 	engine := api.NewGin(handler.NewHandler(services))
 
 	err = engine.Run(cfg.HTTP_PORT)
