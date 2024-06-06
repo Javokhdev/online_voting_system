@@ -1,0 +1,155 @@
+basePath: /
+definitions:
+  voting.CreateElectionReq:
+    properties:
+      date:
+        type: string
+      name:
+        type: string
+    type: object
+  voting.GetAllElectionRes:
+    properties:
+      Elections:
+        items:
+          $ref: '#/definitions/voting.GetElectionRes'
+        type: array
+    type: object
+  voting.GetElectionRes:
+    properties:
+      date:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  voting.Void:
+    type: object
+info:
+  contact: {}
+  title: Online Voting System Swagger UI
+paths:
+  /election/create:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for creating a new election
+      parameters:
+      - description: Election creation request payload
+        in: body
+        name: election
+        required: true
+        schema:
+          $ref: '#/definitions/voting.CreateElectionReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created election
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to create election
+          schema:
+            type: string
+      summary: Create a new election
+      tags:
+      - Election
+  /election/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting all elections
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted elections
+          schema:
+            $ref: '#/definitions/voting.GetAllElectionRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get elections
+          schema:
+            type: string
+      summary: Get All Elections
+      tags:
+      - Election
+  /election/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting election
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted election
+          schema:
+            $ref: '#/definitions/voting.GetElectionRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get election
+          schema:
+            type: string
+      summary: Get Election
+      tags:
+      - Election
+  /election/update:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for updating election
+      operationId: update_election
+      parameters:
+      - description: Election updaing request payload
+        in: body
+        name: election
+        required: true
+        schema:
+          $ref: '#/definitions/voting.GetElectionRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated election
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to update election
+          schema:
+            type: string
+      summary: Update election
+      tags:
+      - Election
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: role
+    type: apiKey
+swagger: "2.0"
