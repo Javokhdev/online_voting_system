@@ -34,7 +34,7 @@ func (s *PublicVoteStorage) Create(publicVote *v.CreatePublicVoteReq) (*v.Void, 
 
 	id := uuid.New().String()
 
-	if !(s.CheckPublic(publicVote.GetPublicId())) {
+	if !(s.CheckPublic(publicVote.PublicId)) {
 		err := errors.New("error while creating")
 		return nil, err
 	}

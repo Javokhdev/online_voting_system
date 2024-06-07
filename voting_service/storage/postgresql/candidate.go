@@ -2,6 +2,7 @@ package postgresql
 
 import (
 	"database/sql"
+	"fmt"
 	v "voting_service/genproto/voting"
 
 	"github.com/google/uuid"
@@ -70,15 +71,18 @@ func (s *CandidateStorage) CheckPublic(id *v.CreateCandidateReq) bool {
 
 	var findId string
 
-	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id.GetPublicId())
+	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id.PublicId)
 
 	err := row.Scan(&findId)
 
-	if err != nil {
+	fmt.Printf("%T", findId)
+	fmt.Println(findId)
+
+	if err != nil || findId == ""{
 		return false
 	}
 
-	return findId != ""
+	return true
 }
 
 func (s *CandidateStorage) CheckParty(id *v.CreateCandidateReq) bool {
@@ -89,9 +93,12 @@ func (s *CandidateStorage) CheckParty(id *v.CreateCandidateReq) bool {
 
 	err := row.Scan(&findId)
 
-	if err != nil {
+	fmt.Printf("%T\n", findId)
+	fmt.Println(findId)
+
+	if err != nil || findId == ""{
 		return false
 	}
 
-	return findId != ""
+	return true
 }
