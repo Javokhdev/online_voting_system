@@ -2,19 +2,17 @@ package postgresql
 
 import (
 	"database/sql"
-	"errors"
 	v "voting_service/genproto/voting"
 
 	"github.com/google/uuid"
 )
 
 type PublicVoteStorage struct {
-	db    *sql.DB
-	dbPub *sql.DB
+	db *sql.DB
 }
 
-func NewPublicVoteStorage(db *sql.DB, dbPub *sql.DB) *PublicVoteStorage {
-	return &PublicVoteStorage{db: db, dbPub: dbPub}
+func NewPublicVoteStorage(db *sql.DB) *PublicVoteStorage {
+	return &PublicVoteStorage{db: db}
 }
 
 func (s *PublicVoteStorage) Create(publicVote *v.CreatePublicVoteReq) (*v.Void, error) {
@@ -33,11 +31,6 @@ func (s *PublicVoteStorage) Create(publicVote *v.CreatePublicVoteReq) (*v.Void, 
 	}()
 
 	id := uuid.New().String()
-
-	if !(s.CheckPublic(publicVote.PublicId)) {
-		err := errors.New("error while creating")
-		return nil, err
-	}
 
 	_, err = tz.Exec("INSERT INTO public_votes (id, election_id, public_id) VALUES ($1, $2, $3)",
 		id, publicVote.GetElectionId(), publicVote.GetPublicId())
@@ -127,19 +120,4 @@ func (s *PublicVoteStorage) GetVotes(flt *v.Filter) (*v.GetAllVotes, error) {
 		votes.Votes = append(votes.Votes, vote)
 	}
 	return votes, nil
-}
-
-func (s *PublicVoteStorage) CheckPublic(id string) bool {
-
-	var findId string
-
-	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id)
-
-	err := row.Scan(&findId)
-
-	if err != nil {
-		return false
-	}
-
-	return findId == id
 }

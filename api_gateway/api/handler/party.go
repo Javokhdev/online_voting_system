@@ -104,7 +104,7 @@ func (h *Handler) GetAllParties(ctx *gin.Context) {
 // @Tags Party
 // @Accept json
 // @Produce json
-// @Param party body public.GetpartyRes true "Party updating request payload"
+// @Param party body public.GetPartyRes true "Party updating request payload"
 // @Success 200 {object} public.Void "Successfully updated party"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to update party"
@@ -134,7 +134,7 @@ func (h *Handler) UpdateParty(ctx *gin.Context) {
 // @Summary Delete party
 // @Description Endpoint for deleting party
 // @Id delete_party
-// @Tags = Party
+// @Tags Party
 // @Accept json
 // @Produce json
 // @Param  id query public.ById true "ID"

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"gateway/genproto/public"
 	"gateway/genproto/voting"
 	"log/slog"
 	"net/http"
@@ -29,6 +30,25 @@ func (h *Handler) CreateCandidate(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		return
+	}
+
+	id := public.ById{}
+	id.Id = cs.GetPartyId()
+	party, err := h.srvs.PartyService.GetById(ctx, &id)
+
+	if err != nil || party.GetId() != id.GetId(){
+		slog.Info("error with party id.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		return
+	}
+
+	id.Id = cs.GetPublicId()
+	public, err := h.srvs.PublicService.GetById(ctx, &id)
+
+	if err != nil || public.GetId() != id.GetId(){
+		slog.Info("error with public id.", "err", err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
 		return
 	}
@@ -76,7 +96,7 @@ func (h *Handler) GetByIdCandidate(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param election query voting.Filter true "Candidates geting request payload"
-// @Success 200 {object} voting.GetCandidatesRes "Successfully getted candidates"
+// @Success 200 {object} voting.GetCandidateRes "Successfully getted candidates"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to get candidates"
 // @Router /candidate/getall [GET]

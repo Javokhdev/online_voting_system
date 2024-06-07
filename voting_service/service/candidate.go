@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 	"log/slog"
 	v "voting_service/genproto/voting"
 	st "voting_service/storage/postgresql"
@@ -22,20 +21,6 @@ func NewCandidateService(storage *st.Storage) *CandidateService {
 
 func (s *CandidateService) Create(ctx context.Context, candidate *v.CreateCandidateReq) (*v.Void, error) {
 	slog.Info("CreateCandidate Service called", "candidate", candidate)
-
-	check := s.storage.CandidateS.CheckParty(candidate)
-
-	if !check {
-		err := errors.New("error while creating")
-		return nil, err
-	}
-
-	check = s.storage.CandidateS.CheckPublic(candidate)
-
-	if !check {
-		err := errors.New("error while creating")
-		return nil, err
-	}
 
 	_, err := s.storage.CandidateS.Create(candidate)
 

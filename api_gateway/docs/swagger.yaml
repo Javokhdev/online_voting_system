@@ -1,4 +1,10 @@
+basePath: /
 definitions:
+  public.ById:
+    properties:
+      id:
+        type: string
+    type: object
   public.CreatePartyReq:
     properties:
       description:
@@ -17,6 +23,50 @@ definitions:
       first_name:
         type: string
       gender:
+        type: string
+      last_name:
+        type: string
+      nation:
+        type: string
+      party_id:
+        type: string
+    type: object
+  public.GetAllPartyRes:
+    properties:
+      Parties:
+        items:
+          $ref: '#/definitions/public.GetPartyRes'
+        type: array
+    type: object
+  public.GetAllPublicRes:
+    properties:
+      Publics:
+        items:
+          $ref: '#/definitions/public.GetPublicRes'
+        type: array
+    type: object
+  public.GetPartyRes:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      opened_date:
+        type: string
+      slogan:
+        type: string
+    type: object
+  public.GetPublicRes:
+    properties:
+      birthday:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      id:
         type: string
       last_name:
         type: string
@@ -50,6 +100,17 @@ definitions:
           $ref: '#/definitions/voting.GetElectionRes'
         type: array
     type: object
+  voting.GetCandidateRes:
+    properties:
+      election_id:
+        type: string
+      id:
+        type: string
+      party_id:
+        type: string
+      public_id:
+        type: string
+    type: object
   voting.GetElectionRes:
     properties:
       date:
@@ -63,6 +124,7 @@ definitions:
     type: object
 info:
   contact: {}
+  title: Online Voting System Swagger UI
 paths:
   /candidate/create:
     post:
@@ -92,6 +154,122 @@ paths:
           schema:
             type: string
       summary: Create a new candidate
+      tags:
+      - Candidate
+  /candidate/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Endpoint for deleting candidate
+      operationId: delete_candidate
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted candidate
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to delete candidate
+          schema:
+            type: string
+      summary: Delete Candidate
+      tags:
+      - Candidate
+  /candidate/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting all candidates
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted candidates
+          schema:
+            $ref: '#/definitions/voting.GetCandidateRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get candidates
+          schema:
+            type: string
+      summary: Get All Candidates
+      tags:
+      - Candidate
+  /candidate/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting candidate
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted candidate
+          schema:
+            $ref: '#/definitions/voting.GetCandidateRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get candidate
+          schema:
+            type: string
+      summary: Get Candidate
+      tags:
+      - Candidate
+  /candidate/update:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for deleting candidate
+      operationId: update_candidate
+      parameters:
+      - description: Candidate updaing request payload
+        in: body
+        name: candidate
+        required: true
+        schema:
+          $ref: '#/definitions/voting.GetCandidateRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated candidate
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to update candidate
+          schema:
+            type: string
+      summary: Update Candidate
       tags:
       - Candidate
   /election/create:
@@ -272,6 +450,122 @@ paths:
       summary: Create a new party
       tags:
       - Party
+  /party/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Endpoint for deleting party
+      operationId: delete_party
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted party
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to delete party
+          schema:
+            type: string
+      summary: Delete party
+      tags:
+      - Party
+  /party/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting all parties
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted parties
+          schema:
+            $ref: '#/definitions/public.GetAllPartyRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get parties
+          schema:
+            type: string
+      summary: Get All Parties
+      tags:
+      - Party
+  /party/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting party
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted party
+          schema:
+            $ref: '#/definitions/public.GetPartyRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get party
+          schema:
+            type: string
+      summary: Get Party
+      tags:
+      - Party
+  /party/update:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for deleting Party
+      operationId: update_party
+      parameters:
+      - description: Party updating request payload
+        in: body
+        name: party
+        required: true
+        schema:
+          $ref: '#/definitions/public.GetPartyRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated party
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to update party
+          schema:
+            type: string
+      summary: Update Party
+      tags:
+      - Party
   /public/create:
     post:
       consumes:
@@ -280,7 +574,7 @@ paths:
       parameters:
       - description: Public creation request payload
         in: body
-        name: party
+        name: public
         required: true
         schema:
           $ref: '#/definitions/public.CreatePublicReq'
@@ -302,4 +596,121 @@ paths:
       summary: Create a new public
       tags:
       - Public
+  /public/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Endpoint for deleting public
+      operationId: delete_public
+      parameters:
+      - description: Public deleting request payload
+        in: body
+        name: public
+        required: true
+        schema:
+          $ref: '#/definitions/public.ById'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted public
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to delete public
+          schema:
+            type: string
+      summary: Delete public
+      tags:
+      - Public
+  /public/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting all publics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted publics
+          schema:
+            $ref: '#/definitions/public.GetAllPublicRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get publics
+          schema:
+            type: string
+      summary: Get All Publics
+      tags:
+      - Public
+  /public/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting public
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted public
+          schema:
+            $ref: '#/definitions/public.GetPublicRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get public
+          schema:
+            type: string
+      summary: Get Public
+      tags:
+      - Public
+  /public/update:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for deleting public
+      operationId: update_public
+      parameters:
+      - description: Public updating request payload
+        in: body
+        name: public
+        required: true
+        schema:
+          $ref: '#/definitions/public.GetPublicRes'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated public
+          schema:
+            $ref: '#/definitions/public.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to update public
+          schema:
+            type: string
+      summary: Update public
+      tags:
+      - Public
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: role
+    type: apiKey
 swagger: "2.0"

@@ -79,7 +79,7 @@ func (h *Handler) GetByIdPublic(ctx *gin.Context) {
 // @Tags Public
 // @Accept json
 // @Produce json
-// @Success 200 {object} public.GetPublicsRes "Successfully getted publics"
+// @Success 200 {object} public.GetAllPublicRes "Successfully getted publics"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to get publics"
 // @Router /public/getall [GET]
@@ -107,7 +107,7 @@ func (h *Handler) GetAllPublics(ctx *gin.Context) {
 // @Gender update_public
 // @Nation update_public
 // @public_Id update_public
-// @Tags public
+// @Tags Public
 // @Accept json
 // @Produce json
 // @Param public body public.GetPublicRes true "Public updating request payload"
@@ -148,7 +148,7 @@ func (h *Handler) UpdatePublic(ctx *gin.Context) {
 // @Gender delete_public
 // @Nation delete_public
 // @public_Id delete_public
-// @Tags public
+// @Tags Public
 // @Accept json
 // @Produce json
 // @Param public body public.ById true "Public deleting request payload"

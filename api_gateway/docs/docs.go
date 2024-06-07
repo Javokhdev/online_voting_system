@@ -61,6 +61,185 @@ const docTemplate = `{
                 }
             }
         },
+        "/candidate/delete": {
+            "delete": {
+                "description": "Endpoint for deleting candidate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Candidate"
+                ],
+                "summary": "Delete Candidate",
+                "operationId": "delete_candidate",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted candidate",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete candidate",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/candidate/getall": {
+            "get": {
+                "description": "Endpoint for getting all candidates",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Candidate"
+                ],
+                "summary": "Get All Candidates",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted candidates",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetCandidateRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get candidates",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/candidate/getbyid": {
+            "get": {
+                "description": "Endpoint for getting candidate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Candidate"
+                ],
+                "summary": "Get Candidate",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted candidate",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetCandidateRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get candidate",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/candidate/update": {
+            "put": {
+                "description": "Endpoint for deleting candidate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Candidate"
+                ],
+                "summary": "Update Candidate",
+                "operationId": "update_candidate",
+                "parameters": [
+                    {
+                        "description": "Candidate updaing request payload",
+                        "name": "candidate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetCandidateRes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated candidate",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update candidate",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/election/create": {
             "post": {
                 "description": "Endpoint for creating a new election",
@@ -332,6 +511,185 @@ const docTemplate = `{
                 }
             }
         },
+        "/party/delete": {
+            "delete": {
+                "description": "Endpoint for deleting party",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Party"
+                ],
+                "summary": "Delete party",
+                "operationId": "delete_party",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted party",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete party",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/party/getall": {
+            "get": {
+                "description": "Endpoint for getting all parties",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Party"
+                ],
+                "summary": "Get All Parties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted parties",
+                        "schema": {
+                            "$ref": "#/definitions/public.GetAllPartyRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get parties",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/party/getbyid": {
+            "get": {
+                "description": "Endpoint for getting party",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Party"
+                ],
+                "summary": "Get Party",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted party",
+                        "schema": {
+                            "$ref": "#/definitions/public.GetPartyRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get party",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/party/update": {
+            "put": {
+                "description": "Endpoint for deleting Party",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Party"
+                ],
+                "summary": "Update Party",
+                "operationId": "update_party",
+                "parameters": [
+                    {
+                        "description": "Party updating request payload",
+                        "name": "party",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/public.GetPartyRes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated party",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update party",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/public/create": {
             "post": {
                 "description": "Endpoint for creating a new public",
@@ -348,7 +706,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Public creation request payload",
-                        "name": "party",
+                        "name": "public",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -377,9 +735,188 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/public/delete": {
+            "delete": {
+                "description": "Endpoint for deleting public",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Delete public",
+                "operationId": "delete_public",
+                "parameters": [
+                    {
+                        "description": "Public deleting request payload",
+                        "name": "public",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/public.ById"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted public",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete public",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/getall": {
+            "get": {
+                "description": "Endpoint for getting all publics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Get All Publics",
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted publics",
+                        "schema": {
+                            "$ref": "#/definitions/public.GetAllPublicRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get publics",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/getbyid": {
+            "get": {
+                "description": "Endpoint for getting public",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Get Public",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted public",
+                        "schema": {
+                            "$ref": "#/definitions/public.GetPublicRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get public",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public/update": {
+            "put": {
+                "description": "Endpoint for deleting public",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Update public",
+                "operationId": "update_public",
+                "parameters": [
+                    {
+                        "description": "Public updating request payload",
+                        "name": "public",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/public.GetPublicRes"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated public",
+                        "schema": {
+                            "$ref": "#/definitions/public.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to update public",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "public.ById": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "public.CreatePartyReq": {
             "type": "object",
             "properties": {
@@ -407,6 +944,74 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "nation": {
+                    "type": "string"
+                },
+                "party_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "public.GetAllPartyRes": {
+            "type": "object",
+            "properties": {
+                "Parties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/public.GetPartyRes"
+                    }
+                }
+            }
+        },
+        "public.GetAllPublicRes": {
+            "type": "object",
+            "properties": {
+                "Publics": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/public.GetPublicRes"
+                    }
+                }
+            }
+        },
+        "public.GetPartyRes": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "opened_date": {
+                    "type": "string"
+                },
+                "slogan": {
+                    "type": "string"
+                }
+            }
+        },
+        "public.GetPublicRes": {
+            "type": "object",
+            "properties": {
+                "birthday": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "last_name": {
@@ -459,6 +1064,23 @@ const docTemplate = `{
                 }
             }
         },
+        "voting.GetCandidateRes": {
+            "type": "object",
+            "properties": {
+                "election_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "party_id": {
+                    "type": "string"
+                },
+                "public_id": {
+                    "type": "string"
+                }
+            }
+        },
         "voting.GetElectionRes": {
             "type": "object",
             "properties": {
@@ -476,6 +1098,13 @@ const docTemplate = `{
         "voting.Void": {
             "type": "object"
         }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "role",
+            "in": "header"
+        }
     }
 }`
 
@@ -483,9 +1112,9 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "Online Voting System Swagger UI",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

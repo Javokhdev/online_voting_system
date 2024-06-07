@@ -2,7 +2,6 @@ package postgresql
 
 import (
 	"database/sql"
-	"fmt"
 	v "voting_service/genproto/voting"
 
 	"github.com/google/uuid"
@@ -10,11 +9,10 @@ import (
 
 type CandidateStorage struct {
 	db    *sql.DB
-	dbPub *sql.DB
 }
 
-func NewCandidateStorage(db *sql.DB, dbPub *sql.DB) *CandidateStorage {
-	return &CandidateStorage{db: db, dbPub: dbPub}
+func NewCandidateStorage(db *sql.DB) *CandidateStorage {
+	return &CandidateStorage{db: db}
 }
 
 func (s *CandidateStorage) Create(candidate *v.CreateCandidateReq) (*v.Void, error) {
@@ -65,40 +63,4 @@ func (s *CandidateStorage) Update(candidate *v.GetCandidateRes) (*v.Void, error)
 func (s *CandidateStorage) Delete(id *v.ById) (*v.Void, error) {
 	_, err := s.db.Exec("Update candidates SET deleted = Extract(epoch from now()) WHERE id = $1", id.GetId())
 	return nil, err
-}
-
-func (s *CandidateStorage) CheckPublic(id *v.CreateCandidateReq) bool {
-
-	var findId string
-
-	row := s.dbPub.QueryRow("SELECT id FROM publics WHERE id = $1 and deleted_at = 0", id.PublicId)
-
-	err := row.Scan(&findId)
-
-	fmt.Printf("%T", findId)
-	fmt.Println(findId)
-
-	if err != nil || findId == ""{
-		return false
-	}
-
-	return true
-}
-
-func (s *CandidateStorage) CheckParty(id *v.CreateCandidateReq) bool {
-
-	var findId string
-
-	row := s.dbPub.QueryRow("SELECT id FROM parties WHERE id = $1 and deleted_at = 0", id.GetPartyId())
-
-	err := row.Scan(&findId)
-
-	fmt.Printf("%T\n", findId)
-	fmt.Println(findId)
-
-	if err != nil || findId == ""{
-		return false
-	}
-
-	return true
 }
