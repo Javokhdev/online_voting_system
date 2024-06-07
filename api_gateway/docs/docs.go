@@ -906,6 +906,171 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/public_vote/create": {
+            "post": {
+                "description": "Endpoint for creating a new public_vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public_vote"
+                ],
+                "summary": "Create a new public_vote",
+                "parameters": [
+                    {
+                        "description": "Public_vote creation request payload",
+                        "name": "public_vote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/voting.CreatePublicVoteReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created public_vote",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to create public_vote",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public_vote/delete": {
+            "delete": {
+                "description": "Endpoint for deleting public_vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public_vote"
+                ],
+                "summary": "Delete Public_vote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted public_vote",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete public_vote",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public_vote/getall": {
+            "get": {
+                "description": "Endpoint for getting public_votes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public_vote"
+                ],
+                "summary": "Get Public_votes",
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted public_votes",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetPublicVoteRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get public_votes",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/public_vote/getbyid": {
+            "get": {
+                "description": "Endpoint for getting public_vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public_vote"
+                ],
+                "summary": "Get Public_vote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted public_vote",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetPublicVoteRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get public_vote",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1053,6 +1218,20 @@ const docTemplate = `{
                 }
             }
         },
+        "voting.CreatePublicVoteReq": {
+            "type": "object",
+            "properties": {
+                "candidate_id": {
+                    "type": "string"
+                },
+                "election_id": {
+                    "type": "string"
+                },
+                "public_id": {
+                    "type": "string"
+                }
+            }
+        },
         "voting.GetAllElectionRes": {
             "type": "object",
             "properties": {
@@ -1091,6 +1270,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "voting.GetPublicVoteRes": {
+            "type": "object",
+            "properties": {
+                "candidate_id": {
+                    "type": "string"
+                },
+                "election_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "public_id": {
                     "type": "string"
                 }
             }

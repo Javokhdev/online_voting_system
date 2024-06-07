@@ -93,6 +93,15 @@ definitions:
       name:
         type: string
     type: object
+  voting.CreatePublicVoteReq:
+    properties:
+      candidate_id:
+        type: string
+      election_id:
+        type: string
+      public_id:
+        type: string
+    type: object
   voting.GetAllElectionRes:
     properties:
       Elections:
@@ -118,6 +127,17 @@ definitions:
       id:
         type: string
       name:
+        type: string
+    type: object
+  voting.GetPublicVoteRes:
+    properties:
+      candidate_id:
+        type: string
+      election_id:
+        type: string
+      id:
+        type: string
+      public_id:
         type: string
     type: object
   voting.Void:
@@ -708,6 +728,113 @@ paths:
       summary: Update public
       tags:
       - Public
+  /public_vote/create:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint for creating a new public_vote
+      parameters:
+      - description: Public_vote creation request payload
+        in: body
+        name: public_vote
+        required: true
+        schema:
+          $ref: '#/definitions/voting.CreatePublicVoteReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created public_vote
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to create public_vote
+          schema:
+            type: string
+      summary: Create a new public_vote
+      tags:
+      - Public_vote
+  /public_vote/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Endpoint for deleting public_vote
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted public_vote
+          schema:
+            $ref: '#/definitions/voting.Void'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to delete public_vote
+          schema:
+            type: string
+      summary: Delete Public_vote
+      tags:
+      - Public_vote
+  /public_vote/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting public_votes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted public_votes
+          schema:
+            $ref: '#/definitions/voting.GetPublicVoteRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get public_votes
+          schema:
+            type: string
+      summary: Get Public_votes
+      tags:
+      - Public_vote
+  /public_vote/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting public_vote
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted public_vote
+          schema:
+            $ref: '#/definitions/voting.GetPublicVoteRes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get public_vote
+          schema:
+            type: string
+      summary: Get Public_vote
+      tags:
+      - Public_vote
 securityDefinitions:
   BearerAuth:
     in: header

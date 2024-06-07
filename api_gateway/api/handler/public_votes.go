@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"gateway/genproto/public"
 	"gateway/genproto/voting"
 	"log/slog"
 	"net/http"
@@ -20,7 +21,7 @@ import (
 // @Success 200 {object} voting.Void "Successfully created public_vote"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to create public_vote"
-// @Router /public_vote"/create [POST]
+// @Router /public_vote/create [POST]
 func (h *Handler) CreatePublicVote(ctx *gin.Context) {
 	pv := voting.CreatePublicVoteReq{}
 
@@ -29,6 +30,15 @@ func (h *Handler) CreatePublicVote(ctx *gin.Context) {
 	if err != nil {
 		slog.Info("Error publiuc_vote binding.", "err", err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+	}
+	id := public.ById{}
+	id.Id = pv.GetPublicId()
+	public, err := h.srvs.PublicService.GetById(ctx, &id)
+
+	if err != nil || public.GetId() != id.GetId(){
+		slog.Info("error with public id.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		return
 	}
 
 	_, err = h.srvs.PublicVoteService.Create(ctx, &pv)
@@ -73,7 +83,7 @@ func (h *Handler) GetByIdPublicVote(ctx *gin.Context) {
 // @Tags Public_vote
 // @Accept json
 // @Produce json
-// @Success 200 {object} voting.GetPublicVotesRes "Successfully getted public_votes"
+// @Success 200 {object} voting.GetPublicVoteRes "Successfully getted public_votes"
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to get public_votes"
 // @Router /public_vote/getall [GET]
