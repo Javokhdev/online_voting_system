@@ -33,5 +33,6 @@ func NewGin(handler *handler.Handler) *gin.Engine {
 	r.POST("/candidate/create", handler.CreateCandidate)
 	// r.Use(Middleware())
 
+	r.DELETE("/election/delete", handler.DeleteElection)
 	return r
 }

@@ -100,7 +100,7 @@ func (h *Handler) GetAllElection(ctx *gin.Context) {
 }
 
 // @Summary Update election
-// @Description Endpoint for updating election
+// @Description Endpoint for deleting election
 // @Id update_election
 // @Name update_election
 // @Date update_election
@@ -132,4 +132,31 @@ func (h *Handler) UpdateElection(ctx *gin.Context){
 	}
 
 	ctx.JSON(200, "Election successfully updated")
+}
+
+// @Summary Delete election
+// @Description Endpoint for deleting election
+// @Id delete_election
+// @Tags Election
+// @Accept json
+// @Produce json
+// @Param  id query voting.ById true "ID"
+// @Success 200 {object} voting.Void "Successfully deleted election"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 500 {object} string "Failed to delete election"
+// @Router /election/delete [DELETE]
+func (h *Handler) DeleteElection(ctx *gin.Context) {
+	election := voting.ById{}
+
+	election.Id = ctx.Query("id")
+
+	_, err := h.srvs.ElectionService.Delete(ctx, &election)
+
+	if err != nil {
+		slog.Info("error election binding.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		return
+	}
+
+	ctx.JSON(200, "Election deleted successfully")
 }

@@ -29,3 +29,5 @@ func (h *Handler) CreatePublicVote(ctx *gin.Context) {
 
 	ctx.JSON(200, "Public vote successfully created")
 }
+
+

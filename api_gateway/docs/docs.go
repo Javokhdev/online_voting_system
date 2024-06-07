@@ -107,6 +107,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/election/delete": {
+            "delete": {
+                "description": "Endpoint for deleting election",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Delete election",
+                "operationId": "delete_election",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted election",
+                        "schema": {
+                            "$ref": "#/definitions/voting.Void"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete election",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/election/getall": {
             "get": {
                 "description": "Endpoint for getting all elections",
@@ -198,7 +241,7 @@ const docTemplate = `{
         },
         "/election/update": {
             "put": {
-                "description": "Endpoint for updating election",
+                "description": "Endpoint for deleting election",
                 "consumes": [
                     "application/json"
                 ],
@@ -433,13 +476,6 @@ const docTemplate = `{
         "voting.Void": {
             "type": "object"
         }
-    },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "role",
-            "in": "header"
-        }
     }
 }`
 
@@ -447,9 +483,9 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
 	Host:             "",
-	BasePath:         "/",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Online Voting System Swagger UI",
+	Title:            "",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

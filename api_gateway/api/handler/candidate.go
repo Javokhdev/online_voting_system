@@ -4,6 +4,7 @@ import (
 	"gateway/genproto/voting"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,8 +38,131 @@ func (h *Handler) CreateCandidate(ctx *gin.Context) {
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
-		return 
+		return
 	}
 
 	ctx.JSON(200, "Candidate successfully created")
+}
+
+// @Summary Get Candidate
+// @Description Endpoint for getting candidate
+// @Tags Candidate
+// @Accept json
+// @Produce json
+// @Param  id query voting.ById true "ID"
+// @Success 200 {object} voting.GetCandidateRes "Successfully getted candidate"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 500 {object} string "Failed to get candidate"
+// @Router /candidate/getbyid [GET]
+func (h *Handler) GetByIdCandidate(ctx *gin.Context) {
+	id := voting.ById{}
+
+	id.Id = ctx.Query("id")
+
+	candidate, err := h.srvs.CandidateService.GetById(ctx, &id)
+
+	if err != nil {
+		slog.Info("error candidate geting.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		return
+	}
+
+	ctx.JSON(200, candidate)
+}
+
+// @Summary Get All Candidates
+// @Description Endpoint for getting all candidates
+// @Tags Candidate
+// @Accept json
+// @Produce json
+// @Param election query voting.Filter true "Candidates geting request payload"
+// @Success 200 {object} voting.GetCandidatesRes "Successfully getted candidates"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 500 {object} string "Failed to get candidates"
+// @Router /candidate/getall [GET]
+func (h *Handler) GetAllCandidates(ctx *gin.Context) {
+	filter := voting.Filter{}
+
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+	offset, _ := strconv.Atoi(ctx.Query("offset"))
+
+	filter.Limit = int32(limit)
+	filter.Offset = int32(offset)
+
+	candidates, err := h.srvs.CandidateService.GetAll(ctx, &filter)
+
+	if err != nil {
+		slog.Info("error candidate geting.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		return
+	}
+
+	ctx.JSON(200, candidates)
+}
+
+// @Summary Update Candidate
+// @Description Endpoint for deleting candidate
+// @Id update_candidate
+// @Election_id delete_candidate
+// @Public_id delete_candidate
+// @Party_id delete_candidate
+// @Tags Candidate
+// @Accept json
+// @Produce json
+// @Param candidate body voting.GetCandidateRes true "Candidate updaing request payload"
+// @Success 200 {object} voting.Void "Successfully updated candidate"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 500 {object} string "Failed to update candidate"
+// @Router /candidate/update [PUT]
+func (h *Handler) UpdateCandidate(ctx *gin.Context) {
+	candidate := voting.GetCandidateRes{}	
+
+	err := ctx.ShouldBindJSON(&candidate)
+
+	if err != nil {
+		slog.Info("error candidate binding.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		return
+	}
+
+	_, err = h.srvs.CandidateService.Update(ctx, &candidate)
+
+	if err != nil {	
+		slog.Info("error candidate binding.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		return
+	}
+
+	ctx.JSON(200, "Candidate successfully updated")
+}
+
+// @Summary Delete Candidate
+// @Description Endpoint for deleting candidate
+// @Id delete_candidate
+// @Election_id delete_candidate
+// @Public_id delete_candidate
+// @Party_id delete_candidate
+// @Tags Candidate
+// @Accept json
+// @Produce json
+// @Param  id query voting.ById true "ID"
+// @Success 200 {object} voting.Void "Successfully deleted candidate"
+// @Failure 400 {object} string "Invalid request payload"
+// @Failure 500 {object} string "Failed to delete candidate"
+// @Router /candidate/delete [DELETE]
+func (h *Handler) DeleteCandidate(ctx *gin.Context) {
+	id := voting.ById{}
+
+	id.Id = ctx.Query("id")
+
+	_, err := h.srvs.CandidateService.Delete(ctx, &id)
+
+	if err != nil {
+		slog.Info("error candidate binding.", "err", err.Error())
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		return
+	}
+
+	ctx.JSON(200, "Candidate successfully deleted")
+
 }
