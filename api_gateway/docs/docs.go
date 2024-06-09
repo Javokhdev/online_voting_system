@@ -953,48 +953,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/public_vote/delete": {
-            "delete": {
-                "description": "Endpoint for deleting public_vote",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Public_vote"
-                ],
-                "summary": "Delete Public_vote",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "id",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully deleted public_vote",
-                        "schema": {
-                            "$ref": "#/definitions/voting.Void"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request payload",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to delete public_vote",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/public_vote/getall": {
             "get": {
                 "description": "Endpoint for getting public_votes",
@@ -1008,6 +966,18 @@ const docTemplate = `{
                     "Public_vote"
                 ],
                 "summary": "Get Public_votes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully getted public_votes",
@@ -1065,6 +1035,95 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Failed to get public_vote",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/vote/getall": {
+            "get": {
+                "description": "Endpoint for getting vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vote"
+                ],
+                "summary": "Get Votes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted vote",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetAllVotes"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get vote",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/vote/getbyid": {
+            "get": {
+                "description": "Endpoint for getting vote",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Vote"
+                ],
+                "summary": "Get Vote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully getted vote",
+                        "schema": {
+                            "$ref": "#/definitions/voting.GetVoteById"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to get vote",
                         "schema": {
                             "type": "string"
                         }
@@ -1243,6 +1302,17 @@ const docTemplate = `{
                 }
             }
         },
+        "voting.GetAllVotes": {
+            "type": "object",
+            "properties": {
+                "votes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/voting.GetVoteById"
+                    }
+                }
+            }
+        },
         "voting.GetCandidateRes": {
             "type": "object",
             "properties": {
@@ -1288,6 +1358,17 @@ const docTemplate = `{
                 },
                 "public_id": {
                     "type": "string"
+                }
+            }
+        },
+        "voting.GetVoteById": {
+            "type": "object",
+            "properties": {
+                "candidate_id": {
+                    "type": "string"
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },

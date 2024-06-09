@@ -28,7 +28,7 @@ func (h *Handler) CreateElection(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error election binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -36,7 +36,7 @@ func (h *Handler) CreateElection(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error election binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -62,7 +62,7 @@ func (h *Handler) GetByIdElection(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error election geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -92,7 +92,7 @@ func (h *Handler) GetAllElection(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error elections getting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -112,14 +112,14 @@ func (h *Handler) GetAllElection(ctx *gin.Context) {
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to update election"
 // @Router /election/update [PUT]
-func (h *Handler) UpdateElection(ctx *gin.Context){
+func (h *Handler) UpdateElection(ctx *gin.Context) {
 	election := voting.GetElectionRes{}
 
 	err := ctx.ShouldBindJSON(&election)
 
 	if err != nil {
 		slog.Info("error election binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -127,7 +127,7 @@ func (h *Handler) UpdateElection(ctx *gin.Context){
 
 	if err != nil {
 		slog.Info("error election binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -154,7 +154,7 @@ func (h *Handler) DeleteElection(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error election binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

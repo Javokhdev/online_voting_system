@@ -30,7 +30,7 @@ func (h *Handler) CreateCandidate(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -38,18 +38,18 @@ func (h *Handler) CreateCandidate(ctx *gin.Context) {
 	id.Id = cs.GetPartyId()
 	party, err := h.srvs.PartyService.GetById(ctx, &id)
 
-	if err != nil || party.GetId() != id.GetId(){
+	if err != nil || party.GetId() != id.GetId() {
 		slog.Info("error with party id.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	id.Id = cs.GetPublicId()
 	public, err := h.srvs.PublicService.GetById(ctx, &id)
 
-	if err != nil || public.GetId() != id.GetId(){
+	if err != nil || public.GetId() != id.GetId() {
 		slog.Info("error with public id.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -57,7 +57,7 @@ func (h *Handler) CreateCandidate(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -83,7 +83,7 @@ func (h *Handler) GetByIdCandidate(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -113,7 +113,7 @@ func (h *Handler) GetAllCandidates(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -135,21 +135,21 @@ func (h *Handler) GetAllCandidates(ctx *gin.Context) {
 // @Failure 500 {object} string "Failed to update candidate"
 // @Router /candidate/update [PUT]
 func (h *Handler) UpdateCandidate(ctx *gin.Context) {
-	candidate := voting.GetCandidateRes{}	
+	candidate := voting.GetCandidateRes{}
 
 	err := ctx.ShouldBindJSON(&candidate)
 
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	_, err = h.srvs.CandidateService.Update(ctx, &candidate)
 
-	if err != nil {	
+	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -179,7 +179,7 @@ func (h *Handler) DeleteCandidate(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error candidate binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

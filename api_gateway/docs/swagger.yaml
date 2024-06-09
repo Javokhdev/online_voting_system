@@ -109,6 +109,13 @@ definitions:
           $ref: '#/definitions/voting.GetElectionRes'
         type: array
     type: object
+  voting.GetAllVotes:
+    properties:
+      votes:
+        items:
+          $ref: '#/definitions/voting.GetVoteById'
+        type: array
+    type: object
   voting.GetCandidateRes:
     properties:
       election_id:
@@ -139,6 +146,13 @@ definitions:
         type: string
       public_id:
         type: string
+    type: object
+  voting.GetVoteById:
+    properties:
+      candidate_id:
+        type: string
+      count:
+        type: integer
     type: object
   voting.Void:
     type: object
@@ -758,38 +772,18 @@ paths:
       summary: Create a new public_vote
       tags:
       - Public_vote
-  /public_vote/delete:
-    delete:
-      consumes:
-      - application/json
-      description: Endpoint for deleting public_vote
-      parameters:
-      - in: query
-        name: id
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfully deleted public_vote
-          schema:
-            $ref: '#/definitions/voting.Void'
-        "400":
-          description: Invalid request payload
-          schema:
-            type: string
-        "500":
-          description: Failed to delete public_vote
-          schema:
-            type: string
-      summary: Delete Public_vote
-      tags:
-      - Public_vote
   /public_vote/getall:
     get:
       consumes:
       - application/json
       description: Endpoint for getting public_votes
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offset
+        type: integer
       produces:
       - application/json
       responses:
@@ -835,6 +829,63 @@ paths:
       summary: Get Public_vote
       tags:
       - Public_vote
+  /vote/getall:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting vote
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted vote
+          schema:
+            $ref: '#/definitions/voting.GetAllVotes'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get vote
+          schema:
+            type: string
+      summary: Get Votes
+      tags:
+      - Vote
+  /vote/getbyid:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting vote
+      parameters:
+      - in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully getted vote
+          schema:
+            $ref: '#/definitions/voting.GetVoteById'
+        "400":
+          description: Invalid request payload
+          schema:
+            type: string
+        "500":
+          description: Failed to get vote
+          schema:
+            type: string
+      summary: Get Vote
+      tags:
+      - Vote
 securityDefinitions:
   BearerAuth:
     in: header

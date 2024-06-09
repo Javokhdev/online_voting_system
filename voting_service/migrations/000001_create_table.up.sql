@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public_votes(
     id UUID PRIMARY KEY,
     election_id UUID REFERENCES elections(id),
     public_id UUID NOT NULL,
+    candidate_id UUID REFERENCES candidates(id),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted_at BIGINT DEFAULT 0
@@ -34,5 +35,5 @@ ADD CONSTRAINT public_votes_unique_election_public UNIQUE (election_id, public_i
 
 CREATE TABLE IF NOT EXISTS votes(
     id UUID PRIMARY KEY,
-    candidate UUID REFERENCES candidates(id)
+    candidate_id UUID REFERENCES candidates(id)
 );

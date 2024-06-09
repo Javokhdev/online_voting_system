@@ -4,10 +4,10 @@ import (
 	"gateway/genproto/public"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
 
 // @Summary Create a new party
 // @Description Endpoint for creating a new party
@@ -30,7 +30,7 @@ func (h *Handler) CreateParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -38,7 +38,7 @@ func (h *Handler) CreateParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -64,13 +64,12 @@ func (h *Handler) GetByIdParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx.JSON(200, party)
 }
-
 
 // @Summary Get All Parties
 // @Description Endpoint for getting all parties
@@ -85,13 +84,19 @@ func (h *Handler) GetByIdParty(ctx *gin.Context) {
 func (h *Handler) GetAllParties(ctx *gin.Context) {
 	filter := public.Filter{}
 
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+	offset, _ := strconv.Atoi(ctx.Query("offset"))
+
+	filter.Limit = int32(limit)
+	filter.Offset = int32(offset)
+
 	parties, err := h.srvs.PartyService.GetAll(ctx, &filter)
 
 	if err != nil {
 		slog.Info("error parties geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}	
+	}
 
 	ctx.JSON(200, parties)
 }
@@ -116,7 +121,7 @@ func (h *Handler) UpdateParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -124,7 +129,7 @@ func (h *Handler) UpdateParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -151,8 +156,8 @@ func (h *Handler) DeleteParty(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error party binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error" : "error in server"})
-		return 
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(200, "Party successfully deleted")

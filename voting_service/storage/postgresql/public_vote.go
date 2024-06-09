@@ -76,7 +76,7 @@ func (s *PublicVoteStorage) Update(publicVote *v.GetPublicVoteRes) (*v.Void, err
 }
 
 func (s *PublicVoteStorage) Delete(id *v.ById) (*v.Void, error) {
-	_, err := s.db.Exec("Update public_votes SET deleted = Extract(epoch from now()) WHERE id = $1", id.GetId())
+	_, err := s.db.Exec("Update public_votes SET deleted = Extract(epoch from now()) WHERE id = $1 deleted_at = 0", id.GetId())
 	return nil, err
 }
 

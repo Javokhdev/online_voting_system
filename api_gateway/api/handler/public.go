@@ -4,6 +4,7 @@ import (
 	"gateway/genproto/public"
 	"log/slog"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,21 +32,20 @@ func (h *Handler) CreatePublic(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error public binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	_, err = h.srvs.PublicService.Create(ctx, &pb)	
+	_, err = h.srvs.PublicService.Create(ctx, &pb)
 
 	if err != nil {
 		slog.Info("error public binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
-		return 
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(200, "Public successfully created")
 }
-
 
 // @Summary Get Public
 // @Description Endpoint for getting public
@@ -66,13 +66,12 @@ func (h *Handler) GetByIdPublic(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error public geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx.JSON(200, public)
 }
-
 
 // @Summary Get All Publics
 // @Description Endpoint for getting all publics
@@ -83,20 +82,25 @@ func (h *Handler) GetByIdPublic(ctx *gin.Context) {
 // @Failure 400 {object} string "Invalid request payload"
 // @Failure 500 {object} string "Failed to get publics"
 // @Router /public/getall [GET]
-func (h *Handler) GetAllPublics(ctx *gin.Context) {	
+func (h *Handler) GetAllPublics(ctx *gin.Context) {
 	filter := public.Filter{}
+
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+	offset, _ := strconv.Atoi(ctx.Query("offset"))
+
+	filter.Limit = int32(limit)
+	filter.Offset = int32(offset)
 
 	publics, err := h.srvs.PublicService.GetAll(ctx, &filter)
 
 	if err != nil {
 		slog.Info("error publics geting.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx.JSON(200, publics)
-}																																																																			
-
+}
 
 // @Summary Update public
 // @Description Endpoint for deleting public
@@ -122,22 +126,21 @@ func (h *Handler) UpdatePublic(ctx *gin.Context) {
 
 	if err != nil {
 		slog.Info("error public binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Not valid JSON"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	_, err = h.srvs.PublicService.Update(ctx, &pb)
-	
+
 	if err != nil {
 		slog.Info("error public binding.", "err", err.Error())
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "error in server"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	ctx.JSON(200, "Public successfully updated")
 
 }
-
 
 // @Summary Delete public
 // @Description Endpoint for deleting public
