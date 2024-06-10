@@ -50,22 +50,6 @@ func (s *PublicVoteService) GetAll(ctx context.Context, flt *v.Filter) (*v.GetAl
 	return res, nil
 }
 
-func (s *PublicVoteService) Update(ctx context.Context, publicVote *v.GetPublicVoteRes) (*v.Void, error) {
-	slog.Info("UpdatePublicVote Service called", "public_vote", publicVote.GetId())
-
-	_, err := s.storage.PublicVoteS.Update(publicVote)
-
-	return nil, err
-}
-
-func (s *PublicVoteService) Delete(ctx context.Context, id *v.ById) (*v.Void, error) {
-	slog.Info("DeletePublicVote Service called", "public_vote_id", id.GetId())
-
-	_, err := s.storage.PublicVoteS.Delete(id)
-
-	return nil, err
-}
-
 func (s *PublicVoteService) GetVote(ctx context.Context, vote *v.ById)(*v.GetVoteById, error){
 	slog.Info("Get Vote by candidate id", "vote byid",vote.GetId())
 

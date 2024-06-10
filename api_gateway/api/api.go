@@ -52,8 +52,5 @@ func NewGin(handler *handler.Handler) *gin.Engine {
 	r.PUT("/public/update", handler.UpdatePublic)
 	r.DELETE("/public/delete", handler.DeletePublic)
 
-	
-	// r.DELETE("/public_vote/delete", handler.DeleteCandidate)
-	// r.POST("/candidate/create", handler.CreateCandidate)
 	return r
 }

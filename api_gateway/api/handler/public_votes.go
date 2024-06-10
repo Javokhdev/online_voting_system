@@ -165,29 +165,3 @@ func (h *Handler) GetVotes(ctx *gin.Context) {
 
 	ctx.JSON(200, vt)
 }
-
-// // @Summary Delete Public_vote
-// // @Description Endpoint for deleting public_vote
-// // @Tags Public_vote
-// // @Accept json
-// // @Produce json
-// // @Param  id query voting.ById true "ID"
-// // @Success 200 {object} voting.Void "Successfully deleted public_vote"
-// // @Failure 400 {object} string "Invalid request payload"
-// // @Failure 500 {object} string "Failed to delete public_vote"
-// // @Router /public_vote/delete [DELETE]
-// func (h *Handler) DeletePublicVote(ctx *gin.Context) {
-// 	id := voting.ById{}
-
-// 	id.Id = ctx.Query("id")
-
-// 	_, err := h.srvs.PublicVoteService.Delete(ctx, &id)
-
-// 	if err != nil {
-// 		slog.Info("error public_vote binding.", "err", err.Error())
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-
-// 	ctx.JSON(200, "Public vote successfully deleted")
-// }

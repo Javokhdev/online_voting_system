@@ -32,8 +32,6 @@ type PublicVoteI interface {
 	Create(*v.CreatePublicVoteReq) (*v.Void, error)
 	GetById(*v.ById) (*v.GetPublicVoteRes, error)
 	GetAll(*v.Filter) (*v.GetAllPublicVoteRes, error)
-	Update(*v.GetPublicVoteRes) (*v.Void, error)
-	Delete(*v.ById) (*v.Void, error)
 	GetVote(*v.ById) (*v.GetVoteById, error)
 	GetVotes(*v.Filter) (*v.GetAllVotes, error)
 }
